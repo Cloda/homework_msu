@@ -188,122 +188,108 @@ void funcEight(double *mas, double *b, int n){
 
 }
 
-// №9
 
-// double mas[7] = {94854., 234.,1.,23.5,67.,8.,345.};
 int main(void){
-    int n = 7;
-    double *masOne;
-    double mas[7] = {94854., 234.,1.,23.5,67.,8.,345.};
+    // первая программа
+    // int n = 0, result;
+    // double x, *masOne;
     // scanf("%d", &n);
     // masOne = (double*)malloc(n*sizeof(double));
     // for(int i = 0; i < n; i++){
     //     scanf("%lf", &masOne[i]); 
     // }
-    double x = mas[n/2];
-    funcNine(mas, x, 0, n);
+    // scanf("%lf", &x);
+    // result = funcOne(masOne, n, x);
+    // 
+
+    // вторая программа
+    // double *masOne, *masTwo;
+    // int n = 0, m = 0;
+    // scanf("%d %d", &n, &m);
+    // masOne = (double*)malloc(n*sizeof(double));
+    // masTwo = (double*)malloc(m*sizeof(double));
+    // for(int i = 0; i < n; i++){
+    //     scanf("%lf", &masOne[i]); 
+    // }
+    // for(int i = 0; i < m; i++){
+    //     scanf("%lf", &masTwo[i]); 
+    // }
+    // funcTwo(masOne, masTwo, n, m);
+    // free(masOne);
+    // free(masTwo);
+    
+    // третья программа
+    // double *masOne, *masTwo;
+    // int n = 0, m = 0;
+    // scanf("%d %d", &n, &m);
+    // masOne = (double*)malloc(n*sizeof(double));
+    // masTwo = (double*)malloc(m*sizeof(double));
+    // for(int i = 0; i < n; i++){
+    //     scanf("%lf", &masOne[i]); 
+    // }
+    // for(int i = 0; i < m; i++){
+    //     scanf("%lf", &masTwo[i]); 
+    // }
+    // funcThree(masOne, masTwo, n, m);
+    // free(masOne);
+    // free(masTwo);
+
+    // четвертая программа
+    // int n = 0;
+    // double *masOne;
+    // scanf("%d", &n);
+    // masOne = (double*)malloc(n*sizeof(double));
+    // for(int i = 0; i < n; i++){
+    //     scanf("%lf", &masOne[i]); 
+    // }
+    // funcFour(masOne, n);
     // free(masOne);
 
-        // первая программа
-        // int n = 0, result;
-        // double x, *masOne;
-        // scanf("%d", &n);
-        // masOne = (double*)malloc(n*sizeof(double));
-        // for(int i = 0; i < n; i++){
-        //     scanf("%lf", &masOne[i]); 
-        // }
-        // scanf("%lf", &x);
-        // result = funcOne(masOne, n, x);
-        // 
+    // пятая программа
+    // int n = 0;
+    // double *masOne;
+    // scanf("%d", &n);
+    // masOne = (double*)malloc(n*sizeof(double));
+    // for(int i = 0; i < n; i++){
+    //     scanf("%lf", &masOne[i]); 
+    // }
+    // funcFive(masOne, n);
+    // free(masOne);
 
-        // вторая программа
-        // double *masOne, *masTwo;
-        // int n = 0, m = 0;
-        // scanf("%d %d", &n, &m);
-        // masOne = (double*)malloc(n*sizeof(double));
-        // masTwo = (double*)malloc(m*sizeof(double));
-        // for(int i = 0; i < n; i++){
-        //     scanf("%lf", &masOne[i]); 
-        // }
-        // for(int i = 0; i < m; i++){
-        //     scanf("%lf", &masTwo[i]); 
-        // }
-        // funcTwo(masOne, masTwo, n, m);
-        // free(masOne);
-        // free(masTwo);
-        
-        // третья программа
-        // double *masOne, *masTwo;
-        // int n = 0, m = 0;
-        // scanf("%d %d", &n, &m);
-        // masOne = (double*)malloc(n*sizeof(double));
-        // masTwo = (double*)malloc(m*sizeof(double));
-        // for(int i = 0; i < n; i++){
-        //     scanf("%lf", &masOne[i]); 
-        // }
-        // for(int i = 0; i < m; i++){
-        //     scanf("%lf", &masTwo[i]); 
-        // }
-        // funcThree(masOne, masTwo, n, m);
-        // free(masOne);
-        // free(masTwo);
+    // шестая программа
+    // int n = 0;
+    // double *masOne;
+    // scanf("%d", &n);
+    // masOne = (double*)malloc(n*sizeof(double));
+    // for(int i = 0; i < n; i++){
+    //     scanf("%lf", &masOne[i]); 
+    // }
+    // funcSix(masOne, n);
+    // free(masOne);
 
-        // четвертая программа
-        // int n = 0;
-        // double *masOne;
-        // scanf("%d", &n);
-        // masOne = (double*)malloc(n*sizeof(double));
-        // for(int i = 0; i < n; i++){
-        //     scanf("%lf", &masOne[i]); 
-        // }
-        // funcFour(masOne, n);
-        // free(masOne);
+    // седьмая программа
+    // int n = 0;
+    // double *masOne;
+    // scanf("%d", &n);
+    // masOne = (double*)malloc(n*sizeof(double));
+    // for(int i = 0; i < n; i++){
+    //     scanf("%lf", &masOne[i]); 
+    // }
+    // funcSeven(masOne, n);
+    // free(masOne);
 
-        // пятая программа
-        // int n = 0;
-        // double *masOne;
-        // scanf("%d", &n);
-        // masOne = (double*)malloc(n*sizeof(double));
-        // for(int i = 0; i < n; i++){
-        //     scanf("%lf", &masOne[i]); 
-        // }
-        // funcFive(masOne, n);
-        // free(masOne);
-
-        // шестая программа
-        // int n = 0;
-        // double *masOne;
-        // scanf("%d", &n);
-        // masOne = (double*)malloc(n*sizeof(double));
-        // for(int i = 0; i < n; i++){
-        //     scanf("%lf", &masOne[i]); 
-        // }
-        // funcSix(masOne, n);
-        // free(masOne);
-
-        // седьмая программа
-        // int n = 0;
-        // double *masOne;
-        // scanf("%d", &n);
-        // masOne = (double*)malloc(n*sizeof(double));
-        // for(int i = 0; i < n; i++){
-        //     scanf("%lf", &masOne[i]); 
-        // }
-        // funcSeven(masOne, n);
-        // free(masOne);
-
-        // восьмая программа
-        // int n = 0;
-        // double *masOne, *b;
-        // scanf("%d", &n);
-        // masOne = (double*)malloc(n*sizeof(double));
-        // b = (double*)malloc(n*sizeof(double));
-        // for(int i = 0; i < n; i++){
-        //     scanf("%lf", &masOne[i]); 
-        //     b[i] = 0;
-        // }
-        // funcEight(masOne, b, n);
-        // free(masOne);
-        // free(b);
+    // восьмая программа
+    // int n = 0;
+    // double *masOne, *b;
+    // scanf("%d", &n);
+    // masOne = (double*)malloc(n*sizeof(double));
+    // b = (double*)malloc(n*sizeof(double));
+    // for(int i = 0; i < n; i++){
+    //     scanf("%lf", &masOne[i]); 
+    //     b[i] = 0;
+    // }
+    // funcEight(masOne, b, n);
+    // free(masOne);
+    // free(b);
     return 0;
 }
