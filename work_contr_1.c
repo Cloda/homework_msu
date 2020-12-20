@@ -80,12 +80,12 @@ int mainFunc(const char *entry, const char *exit)
 }
 
 int main(void){
-    int err;
+    int res;
     char entry[80];
     char exit[80];
     scanf("%s", entry);
     scanf("%s", exit);
-    err = mainFunc(entry, exit);
-    printf("%d", err);
-    return err;
+    res = mainFunc(entry, exit);
+    printf("%d", res);
+    return res;
 }
