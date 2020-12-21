@@ -14,14 +14,16 @@ void deleteElem(int *mas, int k, int n){
 int sort(int *mas, int n){
     int temp = 0, k = 0;
     int count = 0;
-    for(int j = 0; j < n; j++){
+    for(int j = 0; j < n - count; j++){
         k = 0;
         for (int i = 0; i < n - j - count; i++){
-            if(mas[j] == mas[i] && i != j){
-                deleteElem(mas, i, n);
-                count += 1;
+            for(int t = 0; t < n - count; t++){
+                if (mas[j] == mas[t] && t != j){
+                    deleteElem(mas, t, n);
+                    count += 1;
+                }
             }
-            if((mas[i] > mas[i+1]) && ((i+1)<n)){
+            if(mas[i] > mas[i+1] && (i + 1) < n - count){
                 temp = mas[i];
                 mas[i] = mas[i + 1];
                 mas[i + 1] = temp;
@@ -30,12 +32,6 @@ int sort(int *mas, int n){
             
         }   
         if (!k) break;
-    }
-    for(int i = 0; i < n - count; i++){
-        if (mas[i] == mas[i+1] && (i + 1 < n)){
-            deleteElem(mas, i, n);
-            count += 1;
-        }
     }
     return count;
 }
