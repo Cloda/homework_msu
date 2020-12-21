@@ -16,11 +16,7 @@ int sort(int *mas, int n){
     int count = 0;
     for(int j = 0; j < n; j++){
         k = 0;
-        for (int i = 0; i < n - j - count; i++){
-            if(mas[j] == mas[i] && i != j){
-                deleteElem(mas, i, n);
-                count += 1;
-            }
+        for (int i = 0; i < n - j; i++){
             if((mas[i] > mas[i+1]) && ((i+1)<n)){
                 temp = mas[i];
                 mas[i] = mas[i + 1];
