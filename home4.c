@@ -91,19 +91,23 @@ void funcFour(int *mas, int n){
 }
 
 // №5
-void funcFive(double *mas, int n){
-    int temp = 0, key = 0;
+void funcFive(int *mas, int n){
+    int temp = 0, key = 0, flag = 0;
     for (int i = 0; i < n; i++){
         int min = mas[i];
         for (int j = i; j < n; j++){
             if (mas[j]< min){
                 temp = j;
                 min = mas[j];
+                flag = 1;
             }
         }
-        key = mas[temp];
-        mas[temp]= mas[i];
-        mas[i] = key;
+        if (flag == 1){
+            key = mas[temp];
+            mas[temp]= mas[i];
+            mas[i] = key;
+        }
+        flag = 0;
     }
 }
 
