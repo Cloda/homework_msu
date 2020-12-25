@@ -26,7 +26,8 @@ int func(int n){
 }
 
 int main(void){
-    int n, res; 
+    int res; 
+    unsigned int n;
     if (scanf("%d", &n) != 1){
         printf("just fail in number");
         return -1;
