@@ -23,11 +23,7 @@ int sort(int *mas, int n){
                     count += 1;
                 }
             }
-<<<<<<< HEAD
-            if(mas[i] > mas[i+1] && (i + 1) < n - count){
-=======
             if((mas[i] > mas[i+1]) && ((i+1)<n - count)){
->>>>>>> e8e4d30989dbd81d8bd2fe931607855a8255bbb9
                 temp = mas[i];
                 mas[i] = mas[i + 1];
                 mas[i + 1] = temp;
