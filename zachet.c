@@ -3,6 +3,11 @@
 #include "stdio.h"
 #include "stdlib.h"
 
+
+int toMassive(FILE*, int*, int);
+void deleteElem(int*, int, int);
+int sort(int*, int);
+int func(int*, int*, int, int);
 void deleteElem(int *mas, int k, int n){
     for(int i = k; i < n; i++){
         if (i + 1 < n){
@@ -36,11 +41,11 @@ int sort(int *mas, int n){
     return count;
 }
 
+
 int toMassive(FILE *fp, int *mas, int n){
     int temp = 0;
-    for(int i = 0; i < n; i++){
-        fscanf(fp, "%d", &mas[i]);
-        temp = i;
+    while(fscanf(fp, "%d", &mas[temp]) != -1){
+        temp += 1;
     }
     if (!feof(fp)){
         return -1;
@@ -106,16 +111,27 @@ int main(void){
     }
     if((a = (int*)malloc(n*sizeof(int))) == NULL){
         printf("have a problem with memory\n");
+        fclose(fp_open_one);
+        fclose(fp_open_two);
+        fclose(fp_result);
         return -1;
     }
     if((b = (int*)malloc(m*sizeof(int))) == NULL){
         printf("have a problem with memory\n");
+        fclose(fp_open_one);
+        fclose(fp_open_two);
+        fclose(fp_result);
         return -1;
     }
     fall1 = toMassive(fp_open_one, a, n);
     fall2 = toMassive(fp_open_two, b, m);
     if (fall1 == -1 || fall2 == -1){
         printf("problem with elements in file");
+        fclose(fp_open_one);
+        fclose(fp_open_two);
+        fclose(fp_result);
+        free(a);
+        free(b);
         return -1;
     }
     res = func(a, b, n, m);
@@ -127,7 +143,6 @@ int main(void){
     free(b);
     fclose(fp_open_one);
     fclose(fp_open_two);
-    fclose(fp_result);
     fclose(fp_result);
     return 0;
 }
