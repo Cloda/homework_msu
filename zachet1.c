@@ -57,6 +57,7 @@ int main(void){
     res = func(fp_open);
     if (res == -2 || res == -1){
         printf("something wrong or u have't range of low");
+        return -1;
     } else {
         printf("\n%d", res + 1);
         printf("\ncomplite!\n");

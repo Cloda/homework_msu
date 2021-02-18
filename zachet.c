@@ -8,6 +8,7 @@ int toMassive(FILE*, int*, int);
 void deleteElem(int*, int, int);
 int sort(int*, int);
 int func(int*, int*, int, int);
+
 void deleteElem(int *mas, int k, int n){
     for(int i = k; i < n; i++){
         if (i + 1 < n){

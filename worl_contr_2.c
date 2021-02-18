@@ -24,6 +24,7 @@ int main(void){
     FILE *fp_open, *fp_result;
     int res, k;
     double *mas, trash;
+    int n = 0;
     fp_open = fopen("data.txt", "r");
     fp_result = fopen("result.txt", "w");
     if (fp_open == NULL){
@@ -38,7 +39,6 @@ int main(void){
         fclose(fp_open);
         return -1;
     }
-    int n = 0;
     scanf("%d", &k);
     while (fscanf(fp_open ,"%lf", &trash) == 1){
         n += 1;
@@ -51,6 +51,8 @@ int main(void){
     }
     if((mas = (double*)malloc(n*sizeof(double))) == NULL){
         printf("have a problem with memory\n");
+        fclose(fp_open);
+        fclose(fp_result);
         return -1;
     }
     fclose(fp_open);
