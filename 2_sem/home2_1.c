@@ -2,8 +2,11 @@
 #include "stdlib.h"
 #define BUF_LEN 1024
 
-// колво символов
+char *strcpy_(char*, char*);
 int strlen_(char*);
+char *trim_(char*);
+
+// колво символов
 int strlen_(char* s){
     int i = 0;
     for(i = 0; s[i]; i++){
@@ -15,7 +18,6 @@ int strlen_(char* s){
 }
 
 // ставим конец стркои , или некоторый обырв
-char *trim_(char*);
 char *trim_(char* s){
     for(int i = 0; i < BUF_LEN; i++){
         if(s[i] == '\n' || s[i] == EOF || s[i] == '\0'){
@@ -28,13 +30,12 @@ char *trim_(char* s){
 }
 
 // копирование строки s1 в s2
-char *strcpy_(char*, char*);
-char *strcpy_(char *s1, char *s2){
-    int i = 0;
-    for(i = 0; s1[i]; i++){
-        s2[i] = s1[i];
+char *strcpy_(char *from, char *to){
+    int i;
+    for(i = 0; from[i]; i++){
+        to[i] = from[i];
     }
-    return s2;
+    return to;
 }
 
 int main(void){
