@@ -98,6 +98,8 @@ int main(void){
     n = strlen_Beta(tmp);
     if (!(s = (char*)malloc((n+1)*sizeof(char)))){
         printf("not enough memory");
+        fclose(fp_entry);
+        fclose(fp_exit);
         return -1;
     }
     s = strcpy_(buf, s);
