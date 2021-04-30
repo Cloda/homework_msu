@@ -50,15 +50,15 @@ int main(int argc, char **argv){
     FILE *fp, *outf;
     int lines, column, delete_line; 
     double *mas;
-    char *filenameIn = {"input.txt"};
-    char *filenameOut = {"output.txt"};
-    if (argc < 1){
+
+    if (argc < 3){
         printf("not enough objects\n");
         return -1;
     }
 
-    fp = fopen(filenameIn, "r");
-    outf = fopen(filenameOut, "w");
+    printf("%d\n", argc);
+    fp = fopen(argv[1], "r");
+    outf = fopen(argv[2], "w");
     
     if (fp == NULL || outf == NULL){
         printf("error with files");
