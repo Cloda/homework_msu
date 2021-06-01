@@ -115,7 +115,6 @@ void func(char *A, char* B, char* C, int len1, int len2, int flag){
         for (int y = 0; y < len2; y++){
             temp1 = A[x] - '0';
             temp2 = B[y] - '0';
-            // printf("%d %d\n", temp1, temp2);
             trash[x + y] += temp1*temp2;
         }
     }
