@@ -148,6 +148,8 @@ int Func(char *word, char **lines, char **column, int n, int m, int lenWord){
     if (countSame < 0){
         return 0;
     }
+    free(indexOfColumn);
+    free(indexOfLines);
     return countSame - countEnough;
 }
 
@@ -225,7 +227,12 @@ int main(void){
     res = Func(masOfWord, masOfLines, masOfColumn, N, M, len);
     printf("%d", res);
     fclose(fp_in);
+    for(j = 0; j < N*M; j++){
+        free(masOfLines[j]);
+        free(masOfColumn);
+    }
     free(masOfLines);
+    free(masOfElem);
     free(masOfWord);
     return 0;
 }
