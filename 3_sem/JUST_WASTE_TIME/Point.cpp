@@ -32,7 +32,8 @@ Point::Point(double *list, int size){
 
 Point::~Point(){
 	len = 0;
-	delete [] mass;
+	mass = NULL;
+	// delete [] mass;
 }
 
 
@@ -114,9 +115,9 @@ Point operator-(const Point &a, const Point &b){
 }
 
 
-Point operator*(const Point &a, const Point &b)
-{
-	
+
+Point operator*(const Point &a, const Point &b){
+
 	int n3 = 0;
 	int n1 = a.len;
 	int n2 = b.len;
@@ -128,6 +129,23 @@ Point operator*(const Point &a, const Point &b)
 	double A2, B2, C2;
 	
 	double x, y;
+	
+	int step1 = 2;
+	int step2 = 2;
+	
+	
+	
+	
+	if(n1 == 4)
+	{
+		step1 = 4;
+	}
+	
+	if(n2 == 4)
+	{
+		step2 = 4;
+	}
+	
 	
 	for(i = 0; i < n1; i=i+2)
 	{
@@ -144,98 +162,200 @@ Point operator*(const Point &a, const Point &b)
 	
 	if(flag == 1)
 	{
-		return Point(a);//!
+		return Point(a.mass, n1);//!
 	}
 	
-	for(i = 0; i < n1; i=i+2)
+	
+	
+	for(i = 0; i < n1; i=i+step1)
 	{
 		
 		B1 = a.mass[i%n1] - a.mass[(i+2)%n1];//x1 x2
 		A1 = a.mass[(i+1)%n1] - a.mass[(i+3)%n1];//y1 y2
 		C1 = a.mass[i%n1]*a.mass[(i+3)%n1] - a.mass[(i+2)%n1]*a.mass[(i+1)%n1];
 		
-		//printf("A1 = %f B1 = %f C1 = %f \n", A1, B1, C1);
 		
-		for(j = 0; j < n2; j=j+2)
+		for(j = 0; j < n2; j=j+step2)
 		{
 			B2 = b.mass[j%n2] - b.mass[(j+2)%n2];//x1 x2
 			A2 = b.mass[(j+1)%n2] - b.mass[(j+3)%n2];// y1 y2
-			C2 = b.mass[j%n2]*b.mass[(j+3)%n2] - b.mass[(j+2)%n2]*b.mass[(j+1)%n2];
+			C2 = b.mass[j%n2]* b.mass[(j+3)%n2] - b.mass[(j+2)%n2]*b.mass[(j+1)%n2];
 			
 			
-			//printf("A2 = %f B2 = %f C2 = %f \n", A2, B2, C2);
 		
 			
-			if((A2*B1 - A1*B2) == 0)//paralell
+			if((A2*B1 - A1*B2) == 0)//paralell проверить на совпадение 
 			{
-				printf("TEST PARALLEL");
+				if(A2*a.mass[i%n1] - B2*a.mass[(i+1)%n1] + C2 != 0){	
 				break;
+				}
+				
+				if(	A2*a.mass[i%n1] - B2*a.mass[(i+1)%n1] + C2 == 0 &&
+					
+					/*x1*/a.mass[i%n1] >= min(min(a.mass[i%n1] , a.mass[(i+2)%n1]), min(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+					/*x1*/a.mass[i%n1] <= max(max(a.mass[i%n1] , a.mass[(i+2)%n1]), max(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+				
+
+					/*x2*/a.mass[(i+2)%n1] >= min(min(a.mass[i%n1] , a.mass[(i+2)%n1]), min(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+					/*x2*/a.mass[(i+2)%n1] <= max(max(a.mass[i%n1] , a.mass[(i+2)%n1]), max(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+					
+					/*x1*/b.mass[j%n1] >= min(min(a.mass[i%n1] , a.mass[(i+2)%n1]), min(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+					/*x1*/b.mass[j%n1] <= max(max(a.mass[i%n1] , a.mass[(i+2)%n1]), max(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+				
+
+					/*x2*/b.mass[(j+1)%n1] >= min(min(a.mass[i%n1] , a.mass[(i+2)%n1]), min(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+					/*x2*/b.mass[(j+1)%n1] <= max(max(a.mass[i%n1] , a.mass[(i+2)%n1]), max(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+					
+					/*y1*/a.mass[(i+1)%n1] >= min(min(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]), min(b.mass[(j+1)%n2], b.mass[(j+3)%n2]))&&
+					/*y2*/a.mass[(i+1)%n1] <= max(max(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]), max(b.mass[(j+1)%n2], b.mass[(j+3)%n2]))&&
+				
+				
+					/*y1*/a.mass[(i+3)%n1] >= min(min(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]), min(b.mass[(j+1)%n2], b.mass[(j+3)%n2]))&&
+					/*y2*/a.mass[(i+3)%n1] <= max(max(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]), max(b.mass[(j+1)%n2], b.mass[(j+3)%n2]))&&
+				
+					
+					/*y1*/b.mass[(j+1)%n1] >= min(min(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]),min( b.mass[(j+1)%n2], b.mass[(j+3)%n2]))&&
+					/*y2*/b.mass[(j+1)%n1] <= max(max(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]), max(b.mass[(j+1)%n2], b.mass[(j+3)%n2]))&&
+				
+				
+					/*y1*/b.mass[(j+3)%n1] >= min(min(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]), min(b.mass[(j+1)%n2], b.mass[(j+3)%n2]))&&
+					/*y2*/b.mass[(j+3)%n1] <= max(max(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]), max(b.mass[(j+1)%n2], b.mass[(j+3)%n2]))
+				
+				)
+				{	
+					n3=n3+4;
+				}
+					
+				
+				
 			}
 			
 			x = (C1*B2 - C2*B1)/(A2*B1 - A1*B2);
+			
 			if(B1 != 0){ 
-			y = (-A1*x - C1)/-B1;
-			}
-			else{
-			y = (-A2*x  - C2)/-B2;
+				y = (-A1*x - C1)/-B1;
+			} else if(B2 != 0){
+				y = (-A2*x  - C2)/-B2;
+			} else if(B1 == B2 == 0){
+				y = 0;
 			}
 			
 			
 			if( x >= min(a.mass[i%n1] , a.mass[(i+2)%n1])  && 
 				x <= max(a.mass[i%n1] , a.mass[(i+2)%n1]) &&
 				y >= min(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]) && 
-				y <= max(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]) )
-				{
-					n3=n3+2;
-				}
+				y <= max(a.mass[(i+1)%n1] , a.mass[(i+3)%n1])
+				
+				)
+			{
+					if( x >= min(b.mass[j%n1] , b.mass[(j+2)%n1])  && 
+						x <= max(b.mass[j%n1] , b.mass[(j+2)%n1]) &&
+						y >= min(b.mass[(j+1)%n1] , b.mass[(j+3)%n1]) && 
+						y <= max(b.mass[(j+1)%n1] , b.mass[(j+3)%n1]))
+					{
+						n3=n3+2;
+					}
+			}
 		}
 	}
-
+	
 	listRes = new double[n3];
-	// printf("test N3 == %d\n", n3);
-			
-	for(i = 0; i < n1; i=i+2)
+	
+
+
+	for(i = 0; i < n1; i=i+step1)
 	{
-		
 		B1 = a.mass[i%n1] - a.mass[(i+2)%n1];//x1 x2
 		A1 = a.mass[(i+1)%n1] - a.mass[(i+3)%n1];//y1 y2
 		C1 = a.mass[i%n1]*a.mass[(i+3)%n1] - a.mass[(i+2)%n1]*a.mass[(i+1)%n1];
 			
-			
-		for(j = 0; j < n2; j=j+2)
+		for(j = 0; j < n2; j=j+step2)
 		{
 			B2 = b.mass[j%n2] - b.mass[(j+2)%n2];//x1 x2
 			A2 = b.mass[(j+1)%n2] - b.mass[(j+3)%n2];// y1 y2
-			C2 = b.mass[j%n2]*b.mass[(j+3)%n2] - b.mass[(j+2)%n2]*b.mass[(j+1)%n2];
+			C2 = b.mass[j%n2]* b.mass[(j+3)%n2] - b.mass[(j+2)%n2]*b.mass[(j+1)%n2];
 			
-			if((A2*B1 - A1*B2) == 0)//paralell
+			if((A2*B1 - A1*B2) == 0)//paralell  
 			{
-				break;
+				if(A2*a.mass[i%n1] - B2*a.mass[(i+1)%n1] + C2 != 0){
+				
+					break;
+				}
+				
+				if(A2*a.mass[i%n1] - B2*a.mass[(i+1)%n1] + C2 == 0 &&
+					
+					
+					/*x1*/a.mass[i%n1] >= min(min(a.mass[i%n1] , a.mass[(i+2)%n1]), min(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+					/*x1*/a.mass[i%n1] <= max(max(a.mass[i%n1] , a.mass[(i+2)%n1]), max(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+				
+
+					/*x2*/a.mass[(i+2)%n1] >= min(min(a.mass[i%n1] , a.mass[(i+2)%n1]), min(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+					/*x2*/a.mass[(i+2)%n1] <= max(max(a.mass[i%n1] , a.mass[(i+2)%n1]), max(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+					
+					/*x1*/b.mass[j%n1] >= min(min(a.mass[i%n1] , a.mass[(i+2)%n1]), min(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+					/*x1*/b.mass[j%n1] <= max(max(a.mass[i%n1] , a.mass[(i+2)%n1]), max(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+				
+
+					/*x2*/b.mass[(j+1)%n1] >= min(min(a.mass[i%n1] , a.mass[(i+2)%n1]), min(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+					/*x2*/b.mass[(j+1)%n1] <= max(max(a.mass[i%n1] , a.mass[(i+2)%n1]), max(b.mass[j%n2], b.mass[(j+2)%n2]))&&
+					
+					/*y1*/a.mass[(i+1)%n1] >= min(min(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]), min(b.mass[(j+1)%n2], b.mass[(j+3)%n2]))&&
+					/*y2*/a.mass[(i+1)%n1] <= max(max(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]), max(b.mass[(j+1)%n2], b.mass[(j+3)%n2]))&&
+				
+				
+					/*y1*/a.mass[(i+3)%n1] >= min(min(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]), min(b.mass[(j+1)%n2], b.mass[(j+3)%n2]))&&
+					/*y2*/a.mass[(i+3)%n1] <= max(max(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]), max(b.mass[(j+1)%n2], b.mass[(j+3)%n2]))&&
+				
+					
+					/*y1*/b.mass[(j+1)%n1] >= min(min(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]),min( b.mass[(j+1)%n2], b.mass[(j+3)%n2]))&&
+					/*y2*/b.mass[(j+1)%n1] <= max(max(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]), max(b.mass[(j+1)%n2], b.mass[(j+3)%n2]))&&
+				
+				
+					/*y1*/b.mass[(j+3)%n1] >= min(min(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]), min(b.mass[(j+1)%n2], b.mass[(j+3)%n2]))&&
+					/*y2*/b.mass[(j+3)%n1] <= max(max(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]), max(b.mass[(j+1)%n2], b.mass[(j+3)%n2]))
+				
+				){
+						
+					listRes[k] = max(min(a.mass[i%n1] , a.mass[(i+2)%n1]), min(b.mass[j%n2], b.mass[(j+2)%n2]));
+					listRes[k+1] = max(min(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]),min( b.mass[(j+1)%n2], b.mass[(j+3)%n2]));
+					
+					listRes[k+2] = min(max(a.mass[i%n1] , a.mass[(i+2)%n1]), max(b.mass[j%n2], b.mass[(j+2)%n2]));
+					listRes[k+3] = min(max(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]), max(b.mass[(j+1)%n2], b.mass[(j+3)%n2]));
+					
+					k = k + 4;
+				}	
 			}
-			
 			x = (C1*B2 - C2*B1)/(A2*B1 - A1*B2);
+			
 			if(B1 != 0){ 
-			y = (-A1*x - C1)/-B1;
-			}
-			else{
-			y = (-A2*x - C2)/-B2;
+				y = (-A1*x - C1)/-B1;
+			} else if(B2 != 0){
+				y = (-A2*x  - C2)/-B2;
+			} else if(B1 == B2 == 0){
+				y = 0;
 			}
 			
 			if( x >= min(a.mass[i%n1] , a.mass[(i+2)%n1])  && 
 				x <= max(a.mass[i%n1] , a.mass[(i+2)%n1]) &&
 				y >= min(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]) && 
-				y <= max(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]) )
-				{
-					listRes[k] = x;
-					listRes[k+1] = y;
-					k = k + 2;
-				}
+				y <= max(a.mass[(i+1)%n1] , a.mass[(i+3)%n1]))
+			{
+					if( x >= min(b.mass[j%n1] , b.mass[(j+2)%n1])  && 
+						x <= max(b.mass[j%n1] , b.mass[(j+2)%n1]) &&
+						y >= min(b.mass[(j+1)%n1] , b.mass[(j+3)%n1]) && 
+						y <= max(b.mass[(j+1)%n1] , b.mass[(j+3)%n1]))
+					{
+						listRes[k] = x;
+						listRes[k+1] = y;
+						k = k + 2;
+					}
+			}
 		}
 	}
-	
-	return Point(listRes, n3);
-}
 
+	return Point(listRes, n3);
+	
+}
 
 
 void Point::toFile(){
@@ -281,6 +401,7 @@ void Point::DrawLines(){
 
 	if (nameOfFile.length() != 0){
 		string str = "plot \"" + nameOfFile + "\" with lines\n";
+		// cout << str << endl;
 		FILE *pipe = popen(GNUPLOT_NAME, "w");
 
 		if (pipe != NULL){
