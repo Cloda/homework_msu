@@ -14,8 +14,9 @@
 using namespace std;
 
 class Point{
-		
+
 	protected:
+
 		double *mass;
 		int len;
 		string nameOfFile;
@@ -30,12 +31,12 @@ class Point{
 		friend Point operator*(const Point &a, const Point &b);
 		friend Point operator+(const Point &a, const Point &b);
 		friend Point operator-(const Point &a, const Point &b);
+		friend int operator==(const Point &a, const Point &b); // перегрузка оператора сравнение 
 		const Point & operator=(const Point &b);
 
-		void DrawDot();
-		void Print();
-		void toFile();
-		void DrawLines();
+		void DrawDot(); // отрисовка точек
+		void Print(); // принт точек
+		void toFile(); // занесение точек в файл
 };
 
 #endif

@@ -13,6 +13,15 @@ Paralleg::Paralleg(const Paralleg &a){
     mass = a.mass;
 }
 
+const Paralleg & Paralleg::operator=(const Paralleg &b){
+	len = b.len;
+	mass = new double[len];
+	for(int i = 0; i < len; i++){
+		mass[i] = b.mass[i];
+	}
+   	return *this;
+}
+
 Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, double y_2){
 
     if(x_0 - x_1 == 0 || x_2 - x_1 == 0){
@@ -20,7 +29,7 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
         this->~Paralleg();
     } else {
         int SPLIT = 20;
-        len = 8*(SPLIT + 1);
+        len = 8*(SPLIT);
         double *newPoint = new double[len];
         double k1 = (y_0 - y_1)/(x_0 - x_1);
         double k2 = (y_2 - y_1)/(x_2 - x_1);
@@ -34,21 +43,21 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
             temp += 2;
         }
 
-        for(int i = 0; i <= SPLIT; i++){
+        for(int i = 1; i <= SPLIT; i++){
             fake = x_2*((double)i/SPLIT);
             newPoint[temp] = x_0 + fake;
             newPoint[temp + 1] = y_0 + fake*k2;
             temp += 2;
         }
 
-        for(int i = 0; i <= SPLIT; i++){
+        for(int i = 1; i <= SPLIT; i++){
             fake = (x_0 - x_1)*((double)i/SPLIT);
             newPoint[temp] = x_2 + fake;
             newPoint[temp + 1] = y_2 + fake*k1;
             temp += 2;
         }
 
-        for(int i = 0; i <= SPLIT; i++){
+        for(int i = 1; i < SPLIT; i++){
             fake = (x_2 - x_1)*((double)i/SPLIT);
             newPoint[temp] = x_1 + fake;
             newPoint[temp + 1] = y_1 + fake*k2;
@@ -67,10 +76,8 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
         this->~Paralleg();
     } else {
         int SPLIT = 20;
-        len = 8*(SPLIT + 1);
+        len = 8*(SPLIT);
         double *newPoint = new double[len];
-        double k1 = (y_1)/(x_1);
-        double k2 = (y_2)/(x_2);
 
         double xnorm1 = x_1/sqrt(x_1*x_1 + y_1*y_1);
         double ynorm1 = y_1/sqrt(x_1*x_1 + y_1*y_1);
@@ -88,7 +95,7 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
             temp += 2;
         }
 
-        for(int i = 0; i <= SPLIT; i++){
+        for(int i = 1; i <= SPLIT; i++){
             fake = len_two*((double)i/SPLIT);
             newPoint[temp] = x_0 + xnorm2*fake;
             newPoint[temp + 1] = y_0 + ynorm2*fake;
@@ -96,14 +103,14 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
 
         } 
 
-        for(int i = 0; i <= SPLIT; i++){
+        for(int i = 1; i <= SPLIT; i++){
             fake = len_two*((double)i/SPLIT);
             newPoint[temp] = x_0 + x_1 + xnorm2*fake;
             newPoint[temp + 1] = y_0 + y_1 + ynorm2*fake;
             temp += 2;
         }
 
-        for(int i = 0; i <= SPLIT; i++){
+        for(int i = 1; i < SPLIT; i++){
             fake = len_one*((double)i/SPLIT);
             newPoint[temp] = x_0 + x_2 + xnorm1*fake;
             newPoint[temp + 1] = y_0 + y_2 + ynorm1*fake;
