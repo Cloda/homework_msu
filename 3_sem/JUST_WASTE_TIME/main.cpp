@@ -1,55 +1,22 @@
-#include "Point.h"
+#include "Paralleg.h"
 
+
+using namespace std;
 
 int main(void){
-    int n, i;
-    double *list, *list1;
+    double a1, a2, a3, a4, a5, a6, a7, a8;
+    cin >> a1;
+    cin >> a2;
+    cin >> a3;
+    cin >> a4;
+    cin >> a5;
+    cin >> a6;
+    cin >> a7;
+    cin >> a8;
 
+    Paralleg test(a1, a2, a3, a4, a5, a6, a7, a8);
+    test.Print();
+    test.DrawDot();
 
-    cin >> n;
-    cout << "n ==" << n << endl;
-    list = new double[n];
-    if(n % 2 != 0){
-        n += 1;
-    }
-    for(i = 0; i < n; i++){
-        cout << "enter x = " ;
-        cin >> list[i];
-    }
-    
-    Point a(list, n);
-    a.Print();
-    // a.toFile();
-    // a.Draw();
-    // cout << endl;
-
-    n = 0;
-    cin >> n;
-    cout << "n ==" << n << endl;
-    if(n % 2 != 0){
-        n += 1;
-    }
-    list1 = new double[n];
-    for(i = 0; i < n; i++){
-        cout << "enter x = " ;
-        cin >> list1[i];
-
-    }
-    Point b(list1, n);
-    b.Print();
-    
-
-
-    
-    Point c;
-    c = b - a;
-    c.Print();
-
-    // Point c(list, n);
-    // c.Print();
-    // c.toFile();
-    // c.DrawDot();
-    // c.DrawLines();
-    
     return 0;
 }

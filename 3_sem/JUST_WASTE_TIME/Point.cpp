@@ -281,7 +281,6 @@ void Point::DrawLines(){
 
 	if (nameOfFile.length() != 0){
 		string str = "plot \"" + nameOfFile + "\" with lines\n";
-		// cout << str << endl;
 		FILE *pipe = popen(GNUPLOT_NAME, "w");
 
 		if (pipe != NULL){

@@ -14,11 +14,12 @@
 using namespace std;
 
 class Point{
-	private :
+		
+	protected:
 		double *mass;
 		int len;
 		string nameOfFile;
-
+		
 	public:
 		
 		Point();
