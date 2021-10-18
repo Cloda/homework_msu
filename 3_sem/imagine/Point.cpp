@@ -1,20 +1,12 @@
 #include "Point.h" 
-		
-Point::Point(){
-	len = 0;
-	mass = NULL;
+
+Point::Point(){}
+
+Point::~Point(){
+	delete [] mass;
+	mass = 0;
 }
 
-Point::Point(const Point &a){
-	int i;
-	len = a.len;
-	
-	mass = new double[len];
-	
-	for(i = 0; i < len; i++){
-		mass[i] = a.mass[i];
-	}
-}
 
 Point::Point(double *list, int size){
 	int i;
@@ -25,22 +17,8 @@ Point::Point(double *list, int size){
 	for(i = 0; i < len; i++){
 		mass[i] = list[i];
 	}
-	delete [] list;
 }
 
-Point::~Point(){
-	len = 0;
-	mass = NULL;
-}
-
-// принт точек
-void Point::Print(){
-	for(int i = 0; i < len; i++){
-		cout << "Ваши точки из массива:" << endl;
-		cout << mass[i] << " ";
-	}
-	cout << endl;
-}
 
 // перегрузка оператора сравнение 
 int operator==(const Point &a, const Point &b){
@@ -107,19 +85,13 @@ Point operator+(const Point &a, const Point &b){
 		flag = 1;
 	}
 
-	return Point(listRes, postLen);
+	Point c(listRes, postLen);
+	delete [] listRes;
+	listRes = 0;
+
+	return c;
 }
 
-const Point & Point::operator=(const Point &b){
-	len = b.len;
-	mass = new double[len];
-
-	for(int i = 0; i < len; i++){
-		mass[i] = b.mass[i];
-	}
-
-   	return *this;
-}
 
 Point operator-(const Point &a, const Point &b){
 	int n1 = a.len;
@@ -140,7 +112,11 @@ Point operator-(const Point &a, const Point &b){
 		}
 		flag = 1;
 	}
-	return Point(listRes, postLen);
+	Point c(listRes, postLen);
+	delete [] listRes;
+	listRes = 0;
+
+	return c;
 }
 
 Point operator*(const Point &a, const Point &b){
@@ -149,7 +125,6 @@ Point operator*(const Point &a, const Point &b){
 	int n1 = a.len;
 	int n2 = b.len;
 	int i = 0, j = 0, k = 0;
-	int flag = 1;
 	
 	double *listRes;
 	double A1, B1, C1;
@@ -170,7 +145,7 @@ Point operator*(const Point &a, const Point &b){
 	
 	// проверка на равенство экземпляров класса
 	if(a == b){
-		return Point(a.mass, n1);
+		return a;
 	}
 	
 	// цикл с подсчетом количества пересечений
@@ -341,8 +316,11 @@ Point operator*(const Point &a, const Point &b){
 		}
 	}
 
-	return Point(listRes, n3);
-	
+	Point c(listRes, n3);
+	delete [] listRes;
+	listRes = 0;
+
+	return c;
 }
 
 // занесение точек в файл

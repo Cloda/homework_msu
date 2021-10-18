@@ -35,7 +35,7 @@ int main(void){
     // Paralleg test1(a1, a2, a3, a4, a5, a6, a7, a8);
     Paralleg test1(2, 1.5, 4, 3, 2, 0, 5, 2);
     // test1.Print();
-    // test1.toFile();
+    test1.toFile();
     // test1.DrawDot();
     
 

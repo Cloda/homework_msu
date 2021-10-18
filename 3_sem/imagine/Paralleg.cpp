@@ -1,32 +1,17 @@
 #include "Paralleg.h"
 
+Paralleg::Paralleg(){}
+
 Paralleg::~Paralleg(){
-    mass = NULL;
+    delete[] mass;
+    mass = 0;
 }
 
-Paralleg::Paralleg(){
-    mass = NULL;
-    len = 0;
-}
-Paralleg::Paralleg(const Paralleg &a){
-    len = a.len;
-    mass = a.mass;
-}
-
-const Paralleg & Paralleg::operator=(const Paralleg &b){
-	len = b.len;
-	mass = new double[len];
-	for(int i = 0; i < len; i++){
-		mass[i] = b.mass[i];
-	}
-   	return *this;
-}
 
 Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, double y_2){
 
     if(x_0 - x_1 == 0 || x_2 - x_1 == 0){
         cout << "fall in data" << endl;
-        this->~Paralleg();
     } else {
         int SPLIT = 20;
         len = 8*(SPLIT);
@@ -64,7 +49,13 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
             temp += 2;
 
         }    
-        mass = newPoint;
+
+        mass = new double[len];
+        for(int i = 0; i < len; i++){
+            mass[i] = newPoint[i];
+        }
+        delete[] newPoint;
+        newPoint = 0;
     }
 }
 
@@ -73,7 +64,6 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
 
     if(x_1 / x_2 ==  y_1 / y_2){
         cout << "fall in data" << endl;
-        this->~Paralleg();
     } else {
         int SPLIT = 20;
         len = 8*(SPLIT);
@@ -116,7 +106,13 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
             newPoint[temp + 1] = y_0 + y_2 + ynorm1*fake;
             temp += 2;
         }
-        mass = newPoint;
+        
+        mass = new double[len];
+        for(int i = 0; i < len; i++){
+            mass[i] = newPoint[i];
+        }
+        delete[] newPoint;
+        newPoint = 0;
     }
 }
 
