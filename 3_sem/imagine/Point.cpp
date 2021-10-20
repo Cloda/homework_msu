@@ -1,12 +1,25 @@
 #include "Point.h" 
 
-Point::Point(){}
+Point::Point(){
+    mass = new double[2];
+    mass[0] = 0.;
+    mass[1] = 0.;
+    len = 2;
+}
 
 Point::~Point(){
 	delete [] mass;
 	mass = 0;
 }
 
+const Point & Point::operator=(const Point &b){
+	len = b.len;
+	mass = new double[len];
+	for(int i = 0; i < len; i++){
+		mass[i] = b.mass[i];
+	}
+   	return *this;
+}
 
 Point::Point(double *list, int size){
 	int i;
@@ -85,6 +98,7 @@ Point operator+(const Point &a, const Point &b){
 		flag = 1;
 	}
 
+	// основная конструкция для освобождения памяти
 	Point c(listRes, postLen);
 	delete [] listRes;
 	listRes = 0;

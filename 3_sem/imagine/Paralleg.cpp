@@ -1,10 +1,24 @@
 #include "Paralleg.h"
 
-Paralleg::Paralleg(){}
+Paralleg::Paralleg(){
+    mass = new double[2];
+    mass[0] = 0.;
+    mass[1] = 0.;
+    len = 2;
+}
 
 Paralleg::~Paralleg(){
     delete[] mass;
     mass = 0;
+}
+
+const Paralleg & Paralleg::operator=(const Paralleg &b){
+	len = b.len;
+	mass = new double[len];
+	for(int i = 0; i < len; i++){
+		mass[i] = b.mass[i];
+	}
+   	return *this;
 }
 
 

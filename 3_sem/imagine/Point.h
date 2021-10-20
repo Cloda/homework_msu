@@ -8,7 +8,7 @@
 
 #define GNUPLOT_NAME "gnuplot -persist"
 
-
+// зайти в пространтво имен std
 using namespace std;
 
 class Point{
@@ -29,6 +29,7 @@ class Point{
 		friend Point operator+(const Point &a, const Point &b);
 		friend Point operator-(const Point &a, const Point &b);
 		friend int operator==(const Point &a, const Point &b); // перегрузка оператора сравнение 
+		const Point & operator=(const Point &b);
 
 		void DrawDot(); // отрисовка точек
 		void toFile(); // занесение точек в файл
