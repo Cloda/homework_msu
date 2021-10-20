@@ -12,10 +12,22 @@ Point::~Point(){
 	mass = 0;
 }
 
+Point::Point(const Point &a){
+	int i;
+	len = a.len;
+	mass = new double[len];
+	
+	for(i = 0; i < len; i++){
+		mass[i] = a.mass[i];
+	}
+}
+
 const Point & Point::operator=(const Point &b){
+	int i;
 	len = b.len;
 	mass = new double[len];
-	for(int i = 0; i < len; i++){
+	
+	for(i = 0; i < len; i++){
 		mass[i] = b.mass[i];
 	}
    	return *this;

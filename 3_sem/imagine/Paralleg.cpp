@@ -12,9 +12,20 @@ Paralleg::~Paralleg(){
     mass = 0;
 }
 
+Paralleg::Paralleg(const Paralleg &a){
+    int i;
+    len = a.len;
+	mass = new double[len];
+    
+	for(i = 0; i < len; i++){
+		mass[i] = a.mass[i];
+	}
+}
+
 const Paralleg & Paralleg::operator=(const Paralleg &b){
 	len = b.len;
 	mass = new double[len];
+
 	for(int i = 0; i < len; i++){
 		mass[i] = b.mass[i];
 	}

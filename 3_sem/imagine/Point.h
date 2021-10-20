@@ -23,6 +23,7 @@ class Point{
 		
 		Point();
 		Point(double *list, int size);
+		Point(const Point &a);
 		~Point();
 
 		friend Point operator*(const Point &a, const Point &b);

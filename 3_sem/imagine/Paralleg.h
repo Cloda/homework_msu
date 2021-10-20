@@ -17,6 +17,7 @@ class Paralleg: public Point{
                  double x1, double y1,  
                  double x2, double y2,
                  double len_one, double len_two);
+        Paralleg(const Paralleg &a);
         ~Paralleg();
         
         const Paralleg & operator=(const Paralleg &b);
