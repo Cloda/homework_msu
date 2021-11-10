@@ -7,6 +7,8 @@
 #include "math.h"
 
 #define GNUPLOT_NAME "gnuplot -persist"
+#define SPLIT 20
+#define EPS 1e-20
 
 // зайти в пространтво имен std
 using namespace std;
@@ -15,10 +17,9 @@ class Point{
 
 	protected:
 
-		double *mass;
-		int len;
-		string nameOfFile;
-		string mainStr;
+		double *m_mass;
+		int m_len;
+		string m_nameOfFile;
 		
 	public:
 		
@@ -27,15 +28,12 @@ class Point{
 		Point(const Point &a);
 		~Point();
 
-		friend Point operator*(const Point &a, const Point &b);
-		friend Point operator+(const Point &a,const Point &b);
-		friend Point operator-(const Point &a, const Point &b);
 		friend int operator==(const Point &a, const Point &b); // перегрузка оператора сравнение 
 		const Point & operator=(const Point &b);
 
 		void DrawLines(); // отрисовка линий
 		void DrawDot(); // отрисовка точек
-		void toFile(); // занесение точек в файл
+		int toFile(); // занесение точек в файл
 };
 
 #endif
