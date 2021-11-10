@@ -18,6 +18,7 @@ class Point{
 		double *mass;
 		int len;
 		string nameOfFile;
+		string mainStr;
 		
 	public:
 		
@@ -27,11 +28,12 @@ class Point{
 		~Point();
 
 		friend Point operator*(const Point &a, const Point &b);
-		friend Point operator+(const Point &a, const Point &b);
+		friend Point operator+(const Point &a,const Point &b);
 		friend Point operator-(const Point &a, const Point &b);
 		friend int operator==(const Point &a, const Point &b); // перегрузка оператора сравнение 
 		const Point & operator=(const Point &b);
 
+		void DrawLines(); // отрисовка линий
 		void DrawDot(); // отрисовка точек
 		void toFile(); // занесение точек в файл
 };

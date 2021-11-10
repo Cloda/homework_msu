@@ -1,16 +1,10 @@
 #include "Paralleg.h"
 
 Paralleg::Paralleg(){
-    mass = new double[2];
-    mass[0] = 0.;
-    mass[1] = 0.;
-    len = 2;
+    Point();
 }
 
-Paralleg::~Paralleg(){
-    delete[] mass;
-    mass = 0;
-}
+Paralleg::~Paralleg(){}
 
 Paralleg::Paralleg(const Paralleg &a){
     int i;
@@ -32,48 +26,52 @@ const Paralleg & Paralleg::operator=(const Paralleg &b){
    	return *this;
 }
 
+Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, double y_2){ 
+    if(x_0 == x_1 && x_1 == x_2 && y_2 == y_1 && y_2 == y_0){
+        cout << "fall in data 0" << endl;
+    } else if(x_0 == x_1 && y_1 == y_0 ){
+        cout << "fall in data 1" << endl;
+    } else if(x_1 == x_2 && y_1 == y_2){
+        cout << "fall in data 2" << endl;
+    } else if(x_0 == x_2 && y_2 == y_0){
+        cout << "fall in data 3" << endl;
+    } else if(x_0 == x_2 && x_0 == x_1){
+        cout << "fall in data 4" << endl;
+    } else if(y_0 == y_2 && y_0 == y_1){
+        cout << "fall in data 5" << endl;
+    }else {
 
-Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, double y_2){
-
-    if(x_0 - x_1 == 0 || x_2 - x_1 == 0){
-        cout << "fall in data" << endl;
-    } else {
         int SPLIT = 20;
-        len = 8*(SPLIT);
+        len = 8*(SPLIT) + 2;
         double *newPoint = new double[len];
-        double k1 = (y_0 - y_1)/(x_0 - x_1);
-        double k2 = (y_2 - y_1)/(x_2 - x_1);
-
         int temp = 0;
         double fake;
+
+        for(int i = 0; i < SPLIT; i++){
+            fake = ((double)i/SPLIT);
+            newPoint[temp] = x_1 + fake*x_0;
+            newPoint[temp + 1] = y_1 + fake*y_0;
+            temp += 2;
+        }
+
+        for(int i = 0; i < SPLIT; i++){
+            fake = ((double)i/SPLIT);
+            newPoint[temp] = x_0 + x_1 + fake*x_2;
+            newPoint[temp + 1] =y_0 + y_1 + fake*y_2;
+            temp += 2;
+        }
+        for(int i = 0; i < SPLIT; i++){
+            fake = ((double)i/SPLIT);
+            newPoint[temp] = x_0 + x_1 + x_2 - fake*x_0;
+            newPoint[temp + 1] = y_0 + y_1 + y_2 - fake*y_0;
+            temp += 2;
+        }
         for(int i = 0; i <= SPLIT; i++){
-            fake = (x_0 - x_1)*((double)i/SPLIT);
-            newPoint[temp] = x_1 + fake;
-            newPoint[temp + 1] = y_1 + fake*k1;
+            fake = ((double)i/SPLIT);
+            newPoint[temp] = x_1 + x_2 - fake*x_2;
+            newPoint[temp + 1] = y_1 + y_2 - fake*y_2;
             temp += 2;
-        }
-
-        for(int i = 1; i <= SPLIT; i++){
-            fake = x_2*((double)i/SPLIT);
-            newPoint[temp] = x_0 + fake;
-            newPoint[temp + 1] = y_0 + fake*k2;
-            temp += 2;
-        }
-
-        for(int i = 1; i <= SPLIT; i++){
-            fake = (x_0 - x_1)*((double)i/SPLIT);
-            newPoint[temp] = x_2 + fake;
-            newPoint[temp + 1] = y_2 + fake*k1;
-            temp += 2;
-        }
-
-        for(int i = 1; i < SPLIT; i++){
-            fake = (x_2 - x_1)*((double)i/SPLIT);
-            newPoint[temp] = x_1 + fake;
-            newPoint[temp + 1] = y_1 + fake*k2;
-            temp += 2;
-
-        }    
+        } 
 
         mass = new double[len];
         for(int i = 0; i < len; i++){
@@ -81,9 +79,10 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
         }
         delete[] newPoint;
         newPoint = 0;
+
+        toFile();
     }
 }
-
 
 Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, double y_2, double len_one, double len_two){
 
@@ -91,7 +90,7 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
         cout << "fall in data" << endl;
     } else {
         int SPLIT = 20;
-        len = 8*(SPLIT);
+        len = 8*(SPLIT) + 2;
         double *newPoint = new double[len];
 
         double xnorm1 = x_1/sqrt(x_1*x_1 + y_1*y_1);
@@ -103,41 +102,43 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
 
         int temp = 0;
         double fake;
-        for(int i = 0; i <= SPLIT; i++){
+        for(int i = 0; i < SPLIT; i++){
             fake = (len_one)*((double)i/SPLIT);
             newPoint[temp] = x_0 + xnorm1*fake;
             newPoint[temp + 1] = y_0 + ynorm1*fake;
             temp += 2;
         }
 
-        for(int i = 1; i <= SPLIT; i++){
-            fake = len_two*((double)i/SPLIT);
-            newPoint[temp] = x_0 + xnorm2*fake;
-            newPoint[temp + 1] = y_0 + ynorm2*fake;
-            temp += 2;
-
-        } 
-
-        for(int i = 1; i <= SPLIT; i++){
+        for(int i = 0; i < SPLIT; i++){
             fake = len_two*((double)i/SPLIT);
             newPoint[temp] = x_0 + x_1 + xnorm2*fake;
             newPoint[temp + 1] = y_0 + y_1 + ynorm2*fake;
             temp += 2;
-        }
 
-        for(int i = 1; i < SPLIT; i++){
+        } 
+
+        for(int i = 0; i < SPLIT; i++){
             fake = len_one*((double)i/SPLIT);
-            newPoint[temp] = x_0 + x_2 + xnorm1*fake;
-            newPoint[temp + 1] = y_0 + y_2 + ynorm1*fake;
+            newPoint[temp] = x_0 + x_1 + x_2 - xnorm1*fake;
+            newPoint[temp + 1] = y_0 + y_1 + y_2 - ynorm1*fake;
             temp += 2;
         }
-        
+
+        for(int i = 0; i <= SPLIT; i++){
+            fake = len_two*((double)i/SPLIT);
+            newPoint[temp] = x_0 + x_2 - xnorm2*fake;
+            newPoint[temp + 1] = y_0 + y_2 - ynorm2*fake;
+            temp += 2;
+        }
+
         mass = new double[len];
         for(int i = 0; i < len; i++){
             mass[i] = newPoint[i];
         }
         delete[] newPoint;
         newPoint = 0;
+
+        toFile();
     }
 }
 
