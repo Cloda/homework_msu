@@ -11,11 +11,12 @@ class _Vector
 {
     private:
         Type *_vectorPtr; // указатеь на вектор
-        Type *_index; // указатель на следующий
-        int _size;
-        int _mem;
+        Type *_index; // указатель на элемент
+        int _size; // размер в 
+        int _mem; // всего размер
 
     public:
+
         // по умолчанию
         _Vector(){
             _vectorPtr = NULL;
@@ -27,12 +28,13 @@ class _Vector
         _Vector(int n){   
             if(n <= 0){
                 _vectorPtr = NULL;
+                _mem = 0;
             } else if(n >= SIZE){
-                _vectorPtr = new Type[SIZE];
-                _mem = SIZE;
+                _vectorPtr = new Type[SIZE + 1];
+                _mem = SIZE + 1;
             } else{
-                _vectorPtr = new Type[n];
-                _mem = n;
+                _vectorPtr = new Type[n + 1];
+                _mem = n + 1;
                 
             }
             _index = _vectorPtr;
@@ -42,15 +44,18 @@ class _Vector
         // деструктор
         ~_Vector(){
             delete [] _vectorPtr; // удаляем стек
+            _index = NULL;
+            _vectorPtr = NULL;
         }
 
         // поместить элемент в стек
         int push(Type value){
-            if(_index == _vectorPtr + SIZE){
+            if(_size == _mem - 1){
                 return -1;
             }       
-            *(++_index) = value;
-            ++_size;
+            *(_index) = value;
+            _index += 1;
+            _size += 1;
 
             return 1;
         }
@@ -60,8 +65,8 @@ class _Vector
             if(!_size){
                 return -1;
             }       
-            --_index;
-            --_size;
+            _index -= 1;
+            _size -= 1;
         
             return 1;
         }
@@ -90,6 +95,13 @@ class _Vector
                 cout << *_vectorPtr + i << endl;
             }
         }   
+
+        // взятие по индексу
+        Type& operator[](int index)
+        {
+            assert(index >= 0 && index < _mem);
+            return *(_vectorPtr + index);
+        }
 };
 
 
