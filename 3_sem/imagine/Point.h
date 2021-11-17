@@ -7,7 +7,7 @@
 #include "math.h"
 
 #define GNUPLOT_NAME "gnuplot -persist"
-#define SPLIT 20
+#define SPLIT 2
 #define EPS 1e-20
 
 // зайти в пространтво имен std

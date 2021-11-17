@@ -37,10 +37,6 @@ Point::Point(double *list, int size){
 	for(i = 0; i < m_len; i++){
 		m_mass[i] = list[i];
 	}
-
-	if(toFile()){
-		cout << "wrong file" << endl;
-	}
 }
 
 // перегрузка оператора равенства
@@ -64,8 +60,8 @@ const Point & Point::operator=(const Point &b){
 int operator==(const Point &a, const Point &b){
 	int count = 0, flag = 0;
 	if(a.m_len == b.m_len){
-		for(int i = 0; i < a.m_len; i += 2){
-			for(int j = 0; j < b.m_len; j += 2){
+		for(int i = 0; i < a.m_len - 2; i += 2){
+			for(int j = 0; j < b.m_len - 2; j += 2){
 				if(a.m_mass[i] == b.m_mass[j] && a.m_mass[i + 1] == b.m_mass[j + 1]){
 					count += 1;
 				}
@@ -78,7 +74,8 @@ int operator==(const Point &a, const Point &b){
 	} else {
 		return 0;
 	} 
-	if (flag == a.m_len){
+
+	if (flag == a.m_len - 2){
 		return 1;
 	} else {
 		return 0;
@@ -154,7 +151,6 @@ void Point::DrawDot(){
 		else
 			cout << "Could not open pipe" << endl;
 	} else {
-		cout << "lox" << endl;
 		toFile();
 		DrawDot();
 	}

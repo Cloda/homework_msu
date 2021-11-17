@@ -15,10 +15,6 @@ Paralleg::Paralleg(const Paralleg &a){
 	for(i = 0; i < m_len; i++){
 		m_mass[i] = a.m_mass[i];
 	}
-
-    if(toFile()){
-		cout << "wrong file" << endl;
-	}
 }
 
 const Paralleg & Paralleg::operator=(const Paralleg &b){
@@ -50,40 +46,42 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
         cout << "fall in data 5" << endl;
     }else {
 
+
         m_len = 8*(SPLIT) + 2;
-        double *newPoint = new double[m_len];
+        double *newPoint = new double[m_len - 2];
         int temp = 0;
         double fake;
 
         for(int i = 0; i < SPLIT; i++){
             fake = ((double)i/SPLIT);
-            newPoint[temp] = x_1 + fake*x_0;
-            newPoint[temp + 1] = y_1 + fake*y_0;
+            newPoint[temp] = x_1 + fake*(x_0 - x_1);
+            newPoint[temp + 1] = y_1 + fake*(y_0 - y_1);
             temp += 2;
         }
 
         for(int i = 0; i < SPLIT; i++){
             fake = ((double)i/SPLIT);
-            newPoint[temp] = x_0 + x_1 + fake*x_2;
-            newPoint[temp + 1] =y_0 + y_1 + fake*y_2;
+            newPoint[temp] =  x_0 + fake*(x_2 - x_1);
+            newPoint[temp + 1] = y_0 + fake*(y_2 - y_1);
+            temp += 2;
+        }
+
+        for(int i = 0; i < SPLIT; i++){
+            fake = ((double)i/SPLIT);
+            newPoint[temp] = x_0 + x_2 - x_1 - fake*(x_0 - x_1);
+            newPoint[temp + 1] = y_0 + y_2 - y_1 - fake*(y_0 - y_1);
             temp += 2;
         }
         for(int i = 0; i < SPLIT; i++){
             fake = ((double)i/SPLIT);
-            newPoint[temp] = x_0 + x_1 + x_2 - fake*x_0;
-            newPoint[temp + 1] = y_0 + y_1 + y_2 - fake*y_0;
-            temp += 2;
-        }
-        for(int i = 0; i <= SPLIT; i++){
-            fake = ((double)i/SPLIT);
-            newPoint[temp] = x_1 + x_2 - fake*x_2;
-            newPoint[temp + 1] = y_1 + y_2 - fake*y_2;
+            newPoint[temp] = x_2 - fake*(x_2 - x_1);
+            newPoint[temp + 1] = y_2 - fake*(y_2 - y_1);
             temp += 2;
         } 
 
         m_mass = new double[m_len];
         for(int i = 0; i < m_len; i++){
-            m_mass[i] = newPoint[i];
+            m_mass[i] = newPoint[i % m_len];
         }
         delete[] newPoint;
         newPoint = 0;
@@ -100,7 +98,7 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
         cout << "fall in data" << endl;
     } else {
         m_len = 8*(SPLIT) + 2;
-        double *newPoint = new double[m_len];
+        double *newPoint = new double[m_len - 2];
 
         double xnorm1 = x_1/sqrt(x_1*x_1 + y_1*y_1);
         double ynorm1 = y_1/sqrt(x_1*x_1 + y_1*y_1);
@@ -133,7 +131,7 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
             temp += 2;
         }
 
-        for(int i = 0; i <= SPLIT; i++){
+        for(int i = 0; i < SPLIT; i++){
             fake = len_two*((double)i/SPLIT);
             newPoint[temp] = x_0 + x_2 - xnorm2*fake;
             newPoint[temp + 1] = y_0 + y_2 - ynorm2*fake;
@@ -141,10 +139,9 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
         }
 
         m_mass = new double[m_len];
-        for(int i = 0; i < m_len; i++){
-            m_mass[i] = newPoint[i];
+        for(int i = 0; i < m_len + 2; i++){
+            m_mass[i] = newPoint[i % m_len];
         }
-        delete[] newPoint;
 
         if(toFile()){
 		    cout << "wrong file" << endl;
@@ -173,7 +170,6 @@ Point operator+(const Paralleg &a, const Paralleg &b){
 	}
 	
 	Point c(listRes, number);
-	
 	delete[] listRes;
 
 	return c;
@@ -216,96 +212,63 @@ Point operator-(const Paralleg &a, const Paralleg &b){
 
 // перегрузка оператора пересечения
 Point operator*(const Paralleg &a, const Paralleg &b){
-
 	int i = 0, j = 0, k = 0;
 	
 	int n1 = a.m_len;
 	int n2 = b.m_len;
 	
-	double *listRes = new double[n1];
+	double *listRes;
 	double A1, B1, C1;
 	double A2, B2, C2;
+	
 	double x, y;
-		
-	// if(a == b){
-	// 	return Point(a.m_mass, n1);
-	// }
 
-	for(i = 0; i <= n1 ; i += 2)
-	{
+	listRes = new double[8];
+
+	if(a == b){
+        delete [] listRes;
+		return Point(a.m_mass, n1);
+		
+	}
+	
+	for(i = 0; i < n1; i += 2)
+    {
 		A1 = a.m_mass[(i+3)%n1] - a.m_mass[(i+1)%n1];
 		B1 = a.m_mass[i%n1] - a.m_mass[(i+2)%n1];
 		C1 = a.m_mass[(i+1)%n1]*(a.m_mass[(i+2)%n1] - a.m_mass[i%n1]) - a.m_mass[i%n1]*(a.m_mass[(i+3)%n1] - a.m_mass[(i+1)%n1]) ;
 
-		for(j = 0; j <= n2; j += 2)
+		for(j = 0; j < n2; j += 2)
 		{
-			
 			A2 = b.m_mass[(j+3)%n2] - b.m_mass[(j+1)%n2];
 			B2 = b.m_mass[j%n2] - b.m_mass[(j+2)%n2];
 			C2 = b.m_mass[(j+1)%n2]*(b.m_mass[(j+2)%n2] - b.m_mass[j%n2]) - b.m_mass[j%n2]*(b.m_mass[(j+3)%n2] - b.m_mass[(j+1)%n2]) ;
 			
-			
 			if((A2*B1 - A1*B2) == 0){
-				break;
+				continue;
 			}
 
 			x = (C1*B2 - C2*B1)/(A2*B1 - A1*B2);
 
 			if(B1 != 0){ 
-				y = (-1*(A1*x + C1))/B1;
-			} else {
-				y = (-1*(A2*x  + C2))/B2;
+			    y = (-1*(A1*x + C1))/B1;
+			}
+			else{
+			    y = (-1*(A2*x  + C2))/B2;
 			}
 			
-            if(a.m_mass[(i + 2) % n1] <= x <= a.m_mass[i % n1]){
-                if(a.m_mass[(i + 1) % n1] <= y <= a.m_mass[(i + 3) % n1]){
-                    listRes[k] = x;
-			    	listRes[k + 1] = y;
-				    k = k + 2;
-                } else if(a.m_mass[(i + 3) % n1] < y < a.m_mass[(i + 1) % n1]){
-                    listRes[k] = x;
-			    	listRes[k + 1] = y;
-				    k = k + 2;
-                }
-            } else if(a.m_mass[i % n1] < x < a.m_mass[(i + 2) % n1]){
-                if(a.m_mass[(i + 1) % n1] <= y <= a.m_mass[(i + 3) % n1]){
-                    listRes[k] = x;
-			    	listRes[k + 1] = y;
-				    k = k + 2;
-                } else if(a.m_mass[(i + 3) % n1] < y < a.m_mass[(i + 1) % n1]){
-                    listRes[k] = x;
-			    	listRes[k + 1] = y;
-				    k = k + 2;
-                }
-            }
-			
-            
-            // if( ((A1*b.m_mass[j%n2] + B1*b.m_mass[(j+1)%n2] + C1)*(A1*b.m_mass[(j+2)%n2] + B1*b.m_mass[(j+3)%n2] + C1) < 0) &&
-			// 	((A2*a.m_mass[i%n1] + B2*a.m_mass[(i+1)%n1] + C2)*(A2*a.m_mass[(i+2)%n1] + B2*a.m_mass[(i+3)%n1] + C2) < 0)
-			// ){
-			// 	listRes[k] = x;
-			// 	listRes[k + 1] = y;
-			// 	k = k + 2;
-			// }
-
-			// if( ((A1*b.m_mass[j%n2] + B1*b.m_mass[(j+1)%n2] + C1)*(A1*b.m_mass[(j+2)%n2] + B1*b.m_mass[(j+3)%n2] + C1) == 0)){
-			// 	listRes[k] = x;
-			// 	listRes[k + 1] = y;
-			// 	k = k + 2;
-			// } 
-			// if(((A2*a.m_mass[i%n1] + B2*a.m_mass[(i+1)%n1] + C2)*(A2*a.m_mass[(i+2)%n1] + B2*a.m_mass[(i+3)%n1] + C2) == 0)){
-			// 	listRes[k] = x;
-			// 	listRes[k + 1] = y;
-			// 	k = k + 2;
-			// }
+			if( ((A1*b.m_mass[j%n2] + B1*b.m_mass[(j+1)%n2] + C1)*(A1*b.m_mass[(j+2)%n2] + B1*b.m_mass[(j+3)%n2] + C1) <= 0) &&
+				((A2*a.m_mass[i%n1] + B2*a.m_mass[(i+1)%n1] + C2)*(A2*a.m_mass[(i+2)%n1] + B2*a.m_mass[(i+3)%n1] + C2) <= 0)
+			){
+				listRes[k] = x;
+				listRes[k + 1] = y;
+				k = k + 2;
+			}
 
 		}
-		
 	}
 
-    cout << k << endl;
 	Point new_Point(listRes, k);
 	delete [] listRes;
-	
+
 	return new_Point;
 }
