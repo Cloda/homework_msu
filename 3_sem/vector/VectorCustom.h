@@ -10,21 +10,21 @@ template <class Type>
 class _Vector
 {
     private:
-        Type *_vectorPtr; // указатеь на вектор
-        Type *_index; // указатель на элемент
-        int _size; // размер в 
-        int _mem; // всего размер
+        Type *_vectorPtr; // указатель на начало вектор
+        Type *_index; // указатель на элемент в векторе
+        int _size; // заполнненость вектора
+        int _mem; // всего размер вектора
 
     public:
 
         // по умолчанию
         _Vector(){
             _vectorPtr = NULL;
-            _vectorPtr = _index;
+            _index = _vectorPtr;
             _size = 0;
         }
 
-        // по умолчанию размер стека
+        // по умолчанию(пользовательский размер вектора)
         _Vector(int n){   
             if(n <= 0){
                 _vectorPtr = NULL;
@@ -32,23 +32,24 @@ class _Vector
             } else if(n >= SIZE){
                 _vectorPtr = new Type[SIZE + 1];
                 _mem = SIZE + 1;
-            } else{
+            } else {
                 _vectorPtr = new Type[n + 1];
                 _mem = n + 1;
                 
             }
+
             _index = _vectorPtr;
             _size = 0;
         }
 
         // деструктор
         ~_Vector(){
-            delete [] _vectorPtr; // удаляем стек
+            delete [] _vectorPtr;
             _index = NULL;
             _vectorPtr = NULL;
         }
 
-        // поместить элемент в стек
+        // поместить элемент вектор
         int push(Type value){
             if(_size == _mem - 1){
                 return -1;
@@ -97,12 +98,10 @@ class _Vector
         }   
 
         // взятие по индексу
-        Type& operator[](int index)
-        {
-            assert(index >= 0 && index < _mem);
+        Type& operator[](int index){
+            assert(index >= 0 && index < _mem); //вброс ошибки, если не выполняется условие
             return *(_vectorPtr + index);
         }
 };
-
 
 #endif
