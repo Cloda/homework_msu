@@ -45,8 +45,6 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
     } else if(y_0 == y_2 && y_0 == y_1){
         cout << "fall in data 5" << endl;
     }else {
-
-
         m_len = 8*(SPLIT) + 2;
         double *newPoint = new double[m_len - 2];
         int temp = 0;
@@ -83,7 +81,7 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
         for(int i = 0; i < m_len; i++){
             m_mass[i] = newPoint[i % m_len];
         }
-        delete[] newPoint;
+        delete [] newPoint;
         newPoint = 0;
 
         if(toFile()){
