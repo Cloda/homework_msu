@@ -9,7 +9,6 @@ struct Vec_Item
 {
     Type value; // значение
     Vec_Item *next; // указатель на следующий элемент
-    Vec_Item() {next = nullptr;}
 };
 
 
@@ -95,20 +94,8 @@ class _Vector
             return 0;
         }  
 
-        // шаблон нужен новый, тк это дружественный оператор к нашему к классу и не понятно над какой структурой будем работать
-        template <class P>
-        friend ostream & operator<<(ostream& os, const _Vector<P> & st){
-            os << "vector: ";
-            for (Vec_Item<Type> *p = st._top; p; p = p->next)
-            {
-                os << p->value << " ";
-            }
-            os << endl;
-            return os;
-        }
-
         // взятие по индексу(переписать) реализовать индекс по модулю(как в питоне)
-        Type & operator[](int index){
+        Type & operator[](const int index){
             assert(index >= 0 && index < _size);
             int count = _size - 1;
             Type *result;

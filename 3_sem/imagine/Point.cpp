@@ -22,9 +22,6 @@ Point::Point(const Point &a){
 	for(i = 0; i < m_len; i++){
 		m_mass[i] = a.m_mass[i];
 	}
-	if(toFile()){
-		cout << "wrong file" << endl;
-	}
 }
 
 // конструктор с массивом точек
@@ -49,10 +46,6 @@ const Point & Point::operator=(const Point &b){
 		m_mass[i] = b.m_mass[i];
 	}
 	
-	if(toFile()){
-		cout << "wrong file" << endl;
-	}
-
    	return *this;
 }
 
@@ -62,7 +55,7 @@ int operator==(const Point &a, const Point &b){
 	if(a.m_len == b.m_len){
 		for(int i = 0; i < a.m_len - 2; i += 2){
 			for(int j = 0; j < b.m_len - 2; j += 2){
-				if(a.m_mass[i] == b.m_mass[j] && a.m_mass[i + 1] == b.m_mass[j + 1]){
+				if(abs(a.m_mass[i] - b.m_mass[j]) < EPS && abs(a.m_mass[i + 1] - b.m_mass[j + 1]) < EPS) {
 					count += 1;
 				}
 			}
@@ -75,7 +68,7 @@ int operator==(const Point &a, const Point &b){
 		return 0;
 	} 
 
-	if (flag == a.m_len - 2){
+	if (abs(flag - a.m_len - 2) < EPS){
 		return 1;
 	} else {
 		return 0;
@@ -154,4 +147,109 @@ void Point::DrawDot(){
 		toFile();
 		DrawDot();
 	}
+}
+
+// описание разности фигур
+Point operator-(const Point &a, const Point &b){
+	int n1 = a.m_len;
+	int n2 = b.m_len;
+	int i = 0, j = 0, flag = 1, postLen = 0;
+	double *listRes = new double[n1];
+	for(i = 0; i < n1 - 2; i += 2){
+		for(j = 0; j < n2 - 2; j += 2){
+			if( abs(a.m_mass[i] - b.m_mass[j]) < EPS && 
+                abs(a.m_mass[i + 1] - b.m_mass[j + 1]) < EPS)
+            {
+				flag = 0;
+				break;
+			}
+		}
+		if (flag){
+			listRes[postLen] = a.m_mass[i];
+			listRes[postLen + 1] = a.m_mass[i + 1];
+			postLen += 2;
+		}
+		flag = 1;
+	}
+
+	if(postLen == EPS){
+        delete [] listRes;
+        return Point();
+
+	} else {
+        delete [] listRes;
+		return Point (listRes, postLen);
+	}
+
+	return Point();
+}
+
+// описание объединение фигур
+Point operator+(const Point &a, const Point &b){
+	int n1 = a.m_len;
+	int n2 = b.m_len;
+	int i = 0, number = 0;
+
+	double *listRes = new double[n1 + n2];
+	
+	for(i = 0; i < n1; i += 2){
+		listRes[number] = a.m_mass[i];
+		listRes[number + 1] = a.m_mass[i + 1];
+		number += 2;
+	}
+	for(i = 0; i < n2; i += 2){
+		listRes[number] = b.m_mass[i];
+		listRes[number + 1] = b.m_mass[i + 1];
+		number += 2;
+	}
+	
+	Point c(listRes, number);
+	delete[] listRes;
+
+	return c;
+}
+
+// описание объединение файлов
+// можно сделать быстрее
+Point operator*(const Point &a, const Point &b){
+	int n1 = a.m_len;
+	int n2 = b.m_len;
+	int i = 0, j = 0, number = 0, temp = 0;
+
+	double *listRes = new double[n1 + n2];
+	
+	for(i = 0; i < n1; i += 2){
+		temp = 0;
+		for(j = 0; j < n2; j += 2){
+			if(abs(a.m_mass[i] - b.m_mass[j]) < EPS && abs(a.m_mass[i + 1] - b.m_mass[j + 1]) < EPS){
+				temp = 1;
+				break;
+			}
+		}
+		if(temp == 0){
+			listRes[number] = a.m_mass[i];
+			listRes[number + 1] = a.m_mass[i + 1];
+			number += 2;
+		}
+	}
+	
+	for(j = 0; j < n2; j += 2){
+		temp = 0;
+		for(i = 0; i < n1; i += 2){
+			if(abs(a.m_mass[i] - b.m_mass[j]) < EPS && abs(a.m_mass[i + 1] - b.m_mass[j + 1]) < EPS){
+				temp = 1;
+				break;
+			}
+		}
+		if(temp == 0){
+			listRes[number] = b.m_mass[i];
+			listRes[number + 1] = b.m_mass[i + 1];
+			number += 2;
+		}
+	}
+
+	Point c(listRes, number);
+	delete[] listRes;
+
+	return c;
 }

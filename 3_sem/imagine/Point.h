@@ -8,7 +8,7 @@
 
 #define GNUPLOT_NAME "gnuplot -persist"
 #define SPLIT 2
-#define EPS 1e-20
+#define EPS 0.00000000000000000001
 
 // зайти в пространтво имен std
 using namespace std;
@@ -34,6 +34,10 @@ class Point{
 		void DrawLines(); // отрисовка линий
 		void DrawDot(); // отрисовка точек
 		int toFile(); // занесение точек в файл
+
+		friend Point operator+(const Point &a, const Point &b);
+        friend Point operator*(const Point &a, const Point &b);
+		friend Point operator-(const Point &a, const Point &b);
 };
 
 #endif

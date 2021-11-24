@@ -1,13 +1,34 @@
+// не надо пробовать test1 * test2 * test3 тк надо прописывать много условий
+// один из параметров является параллелограммов, а второй явл точками
+// надо прописывать много условий на принадлежание этой точке к границе
 #include "Paralleg.h"
 
 using namespace std;
 
 int main(void){
-    Paralleg test1(0, 0, 1, 0, 0, 1);
-    Paralleg test2(0, 0, 1, 1, 0, 1); 
-    // Point test3 = test1 + test2;
-    // Point test4 = test1 * test2;
+    Paralleg test1(-3000, 0, 0, 0, 0, -3000);
+    Paralleg test2(-630, -694, 5616, -8648, -1657, 4962); 
+    Paralleg test3(-5812, 6457, 365, -880, -3488, 5615);
+    Paralleg test4(-3956, -8596, -9336, 8103, 2811, 474);
+    Paralleg test5(-4538, 502, -4554, -2433, 1112, -5941);
+    Paralleg test6(1619, -2280, 8233, -2, -7918, -7145);
+
+    Point prob = test1 + test2 + test3 + test4 + test5 + test6;
+    prob.DrawLines();
+
+    // test1.DrawLines();
+    // test2.DrawLines();
     // test3.DrawLines();
-    // test4.DrawDot();
+
+
+
+    Point test = test1 + test2 * test3;
+    // Point test6 = test1 + test3;
+
+    // test5.DrawDot();
+    test.DrawLines();
+
+    // cout << EPS << endl;
+    
     return 0;
 }
