@@ -48,12 +48,12 @@ class _Vector
         int isMemory(); 
 
         // взятие по индексу
-        Type operator[](const int index);
+        const Type operator[](const int index);
 };
 
 template<class Type>
 _Vector<Type>::_Vector(){
-    _top = new Type [0];
+    _top = 0;
     _mem = 0;
     _size = 0;
 }
@@ -123,7 +123,7 @@ int _Vector<Type>::isMemory(){
 } 
 
 template<class Type>
-Type _Vector<Type>::operator[](const int index){
+const Type _Vector<Type>::operator[](const int index){
     assert(index >= 0 && index < _size);
     int count = _size - 1;
     Type result;
