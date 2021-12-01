@@ -155,8 +155,8 @@ Point operator-(const Point &a, const Point &b){
 	int n2 = b.m_len;
 	int i = 0, j = 0, flag = 1, postLen = 0;
 	double *listRes = new double[n1];
-	for(i = 0; i < n1 - 2; i += 2){
-		for(j = 0; j < n2 - 2; j += 2){
+	for(i = 0; i < n1; i += 2){
+		for(j = 0; j < n2; j += 2){
 			if( abs(a.m_mass[i] - b.m_mass[j]) < EPS && 
                 abs(a.m_mass[i + 1] - b.m_mass[j + 1]) < EPS)
             {
@@ -172,13 +172,24 @@ Point operator-(const Point &a, const Point &b){
 		flag = 1;
 	}
 
-	if(postLen == EPS){
+	if(postLen == 0){
         delete [] listRes;
         return Point();
 
 	} else {
-        delete [] listRes;
-		return Point (listRes, postLen);
+		int takePoint;
+		if(postLen % (8*SPLIT + 2) == 0){
+			takePoint = 0;
+		} else {
+			takePoint = (((postLen) / (8*SPLIT + 2)) + 1)*(8*SPLIT + 2);
+		} 
+		for(i = postLen; i < takePoint; i += 2){
+			listRes[i] = listRes[postLen - 2];
+			listRes[i + 1] = listRes[postLen - 1];
+		}
+		Point c(listRes, takePoint);
+		delete [] listRes;
+		return c;
 	}
 
 	return Point();
@@ -248,8 +259,24 @@ Point operator*(const Point &a, const Point &b){
 		}
 	}
 
-	Point c(listRes, number);
-	delete[] listRes;
+	if(number == 0){
+        delete [] listRes;
+        return Point();
+	} else {
+		int takePoint;
+		if(number % (8*SPLIT + 2) == 0){
+			takePoint = 0;
+		} else {
+			takePoint = (((number) / (8*SPLIT + 2)) + 1)*(8*SPLIT + 2);
+		} 
+		for(i = number; i < takePoint; i += 2){
+			listRes[i] = listRes[number - 2];
+			listRes[i + 1] = listRes[number - 1];
+		}
+		Point c(listRes, takePoint);
+		delete [] listRes;
+		return c;
+	}
 
-	return c;
+	return Point();
 }

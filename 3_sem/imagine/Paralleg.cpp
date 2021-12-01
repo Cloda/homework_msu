@@ -218,8 +218,24 @@ Point operator*(const Paralleg &a, const Paralleg &b){
 		}
 	}
 
-	Point new_Point(listRes, k);
-	delete [] listRes;
+    if(k == 0){
+        delete [] listRes;
+        return Point();
+	} else {
+		int takePoint;
+		if(k % (8*SPLIT + 2) == 0){
+			takePoint = 0;
+		} else {
+			takePoint = (((k) / (8*SPLIT + 2)) + 1)*(8*SPLIT + 2);
+		} 
+		for(i = k; i < takePoint; i += 2){
+			listRes[i] = listRes[k - 2];
+			listRes[i + 1] = listRes[k - 1];
+		}
+		Point c(listRes, takePoint);
+		delete [] listRes;
+		return c;
+	}
 
-	return new_Point;
+	return Point();
 }

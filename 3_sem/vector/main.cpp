@@ -5,7 +5,7 @@
 int main()
 {
     int elem = 3;
-    _Vector <int> vec(elem);
+    _Vector <int> vec;
     for(int i = 0; i < vec.getLen(); i++){
         vec.push(i);
     }

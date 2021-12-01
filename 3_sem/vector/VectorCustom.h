@@ -26,9 +26,6 @@ class _Vector
         // по умолчанию
         _Vector();
 
-        // по умолчанию размер стека
-        _Vector(int n);
-
         // деструктор
         ~_Vector();
 
@@ -54,21 +51,7 @@ class _Vector
 template<class Type>
 _Vector<Type>::_Vector(){
     _top = 0;
-    _mem = 0;
-    _size = 0;
-}
-
-template<class Type>
-_Vector<Type>::_Vector(int n){
-    _top = 0;
-    if(n <= 0){
-        _mem = 0;
-    } else if(n >= SIZE){
-        _mem = SIZE;
-    } else {
-        _mem = n;
-        
-    }
+    _mem = SIZE;
     _size = 0;
 }
 

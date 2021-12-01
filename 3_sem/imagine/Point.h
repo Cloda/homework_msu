@@ -8,7 +8,7 @@
 
 #define GNUPLOT_NAME "gnuplot -persist"
 #define SPLIT 2
-#define EPS 0.00000000000000000001
+#define EPS 0.0000000000001
 
 // зайти в пространтво имен std
 using namespace std;

@@ -21,7 +21,7 @@ class Paralleg: public Point{
         ~Paralleg();
         
         const Paralleg & operator=(const Paralleg &b);
-        friend Point operator+(const Paralleg &a, const Paralleg &b);
+        friend Point operator+(const Paralleg &a, const Paralleg &b);;
         friend Point operator*(const Paralleg &a, const Paralleg &b);
         friend Point operator-(const Paralleg &a, const Paralleg &b);
 };
