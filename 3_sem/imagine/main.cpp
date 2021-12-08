@@ -14,8 +14,8 @@ int main(void){
     Paralleg test6(1619, -2280, 8233, -2, -7918, -7145);
 
 
-    // Point prob1 = test1 + test2 + test3 - test2;
-    // prob6.DrawLines();
+    Point prob1 = test1 + test2 + test3 ;
+    prob1.DrawLines();
 
     // test1.DrawLines();
     // test2.DrawLines();
@@ -23,10 +23,10 @@ int main(void){
 
 
 
-    // Point test = test1 + test3 - test2 - test3;
+    Point test = test1 + test3 - test2 - test3;
     // Point test6 = test1 + test3;
 
-    // test.DrawLines();
+    test.DrawLines();
     
     return 0;
 }

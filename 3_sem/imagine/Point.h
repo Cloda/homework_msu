@@ -20,6 +20,7 @@ class Point{
 		double *m_mass;
 		int m_len;
 		string m_nameOfFile;
+		int takeToFall();
 		
 	public:
 		

@@ -1,10 +1,5 @@
 #include "Paralleg.h"
 
-
-Paralleg::Paralleg(){
-    Point();
-}
-
 Paralleg::~Paralleg(){}
 
 Paralleg::Paralleg(const Paralleg &a){
@@ -31,16 +26,34 @@ const Paralleg & Paralleg::operator=(const Paralleg &b){
 Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, double y_2){ 
     if(abs(x_0 - x_1) < EPS && abs(x_1 - x_2) < EPS && abs(y_2 - y_1) < EPS && abs(y_2 - y_0) < EPS){
         cout << "fall in data 0" << endl;
+        if(!takeToFall()){
+		    cout << "dont exist this object" << endl;
+	    }
     } else if(abs(x_0 - x_1) < EPS && abs(y_1 - y_0) < EPS){
         cout << "fall in data 1" << endl;
+        if(!takeToFall()){
+		    cout << "dont exist this object" << endl;
+	    }
     } else if(abs(x_1 - x_2) < EPS && abs(y_1 - y_2) < EPS){
         cout << "fall in data 2" << endl;
+        if(!takeToFall()){
+		    cout << "dont exist this object" << endl;
+	    }
     } else if(abs(x_0 - x_2) < EPS && abs(y_2 - y_0) < EPS){
         cout << "fall in data 3" << endl;
+        if(!takeToFall()){
+		    cout << "dont exist this object" << endl;
+	    }
     } else if(abs(x_0 - x_2) < EPS && abs(x_0 - x_1) < EPS){
         cout << "fall in data 4" << endl;
+        if(!takeToFall()){
+		    cout << "dont exist this object" << endl;
+	    }
     } else if(abs(y_0 - y_2) < EPS && abs(y_0 - y_1) < EPS){
         cout << "fall in data 5" << endl;
+        if(!takeToFall()){
+		    cout << "dont exist this object" << endl;
+	    }
     }else {
         m_len = 8*(SPLIT) + 2;
         double *newPoint = new double[m_len];
@@ -88,6 +101,9 @@ Paralleg::Paralleg(double x_0, double y_0, double x_1, double y_1, double x_2, d
 
     if(abs(x_1 / x_2 -  y_1 / y_2) < EPS){
         cout << "fall in data" << endl;
+        if(!takeToFall()){
+		    cout << "dont exist this object" << endl;
+	    }
     } else {
         m_len = 8*(SPLIT) + 2;
         double *newPoint = new double[m_len];

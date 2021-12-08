@@ -6,9 +6,9 @@
 
 class Paralleg: public Point{
 
-	public:
+    public:
 // три точки
-        Paralleg();
+        Paralleg() : Point(){}
         Paralleg(double x0, double y0, 
                  double x1, double y1,  
                  double x2, double y2);
@@ -24,6 +24,7 @@ class Paralleg: public Point{
         friend Point operator+(const Paralleg &a, const Paralleg &b);;
         friend Point operator*(const Paralleg &a, const Paralleg &b);
         friend Point operator-(const Paralleg &a, const Paralleg &b);
+        
 };
 
 #endif

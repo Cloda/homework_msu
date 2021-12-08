@@ -1,12 +1,23 @@
 #include "Point.h" 
 
+int Point::takeToFall(){
+	try {
+		m_mass = new double[2];
+		m_mass[0] = 0.;
+		m_mass[1] = 0.;
+		m_len = 2;
+	} catch(...) {
+		cout << "fall in memory" << endl;
+		return -1;
+	}
+
+	return 1;
+}
 
 Point::Point(){
-    m_mass = new double[2];
-    m_mass[0] = 0.;
-    m_mass[1] = 0.;
-    m_len = 2;
-
+	if(!takeToFall()){
+		cout << "dont exist this object" << endl;
+	}
 }
 
 Point::~Point(){
@@ -77,11 +88,12 @@ int operator==(const Point &a, const Point &b){
 
 // занесение точек в файл
 int Point::toFile(){
+	static int counter = 0;
 	int i, count = 0;
 	FILE *f;
-	cout << "Enter name file: ";
-	cin >> m_nameOfFile;
-	
+	// cout << "Enter name file: ";
+	// cin >> m_nameOfFile;
+	m_nameOfFile = "out" + to_string(counter) + ".txt";
 	f = fopen(m_nameOfFile.c_str(), "w");
 	if(f == NULL){
 		return 1;
@@ -94,6 +106,7 @@ int Point::toFile(){
 		}
 	}
 	fclose(f);
+	counter++;
 
 	return 0;
 }
@@ -110,9 +123,9 @@ void Point::DrawLines(){
 			fflush(pipe);
 
 			// ожидание нажатия клавиши
-			cin.clear();
-			cin.ignore(cin.rdbuf()->in_avail());
-			cin.get();
+			// cin.clear();
+			// cin.ignore(cin.rdbuf()->in_avail());
+			// cin.get();
 
 			pclose(pipe);
 		}
@@ -135,9 +148,9 @@ void Point::DrawDot(){
 			fflush(pipe);
 
 			// ожидание нажатия клавиши
-			cin.clear();
-			cin.ignore(cin.rdbuf()->in_avail());
-			cin.get();
+			// cin.clear();
+			// cin.ignore(cin.rdbuf()->in_avail());
+			// cin.get();
 
 			pclose(pipe);
 		}
