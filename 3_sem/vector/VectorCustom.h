@@ -111,7 +111,7 @@ const Type _Vector<Type>::operator[](const int index){
     int count = _size - 1;
     Type result;
 
-    for (Vec_Item<Type> *p = this->_top; p; p = p->next)
+    for (Vec_Item<Type> *p = _top; p; p = p->next)
     {
         if(count == index){
             result = p->value;
