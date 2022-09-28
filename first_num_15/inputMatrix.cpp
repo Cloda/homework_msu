@@ -3,14 +3,9 @@
 double makeEPS(){
     double e = 1;
     int n = 0;
-	while(0 < 0 + e){
-		e /= 2;
-		n++;
-	}
+	while(0 < 0 + e){ e /= 2; n++; }
 	e = 1;
-	for(; n > 1; n--){
-		e /= 2;
-	}
+	for(; n > 1; n--){ e /= 2; }
     return e;
 }
 
@@ -20,6 +15,17 @@ double _Max(double a, double b, double e){
 
 double _Module(double a, double b, double e){
     return (a - b >= e) ? a - b : b - a;
+}
+
+int multiMatrixOnVector(double *matrix, double *vector, double *result, int len){
+    int i = 0, j = 0;
+    for(i = 0; i < len; i++){
+        result[i] = 0;
+        for(j = 0; j < len; j++){
+            result[i] += matrix[i*len + j] * vector[i];
+        }
+    }
+    return 1;
 }
 
 double checkAccurancy(){
