@@ -1,4 +1,5 @@
 #include "inputMatrix.h"
+#include "_algorithm.h"
 #include <iostream>
 #include <fstream>
 #include <chrono>
@@ -11,7 +12,7 @@ int MethodJordan(){
 
 
 int main(int argc, char *argv[]){
-	/*variable 
+	/* variable 
 		n - dim of matrix
 		m - num of output row and column
 		k - option of input matrix(0 - from file)
@@ -60,6 +61,8 @@ int main(int argc, char *argv[]){
 		}
 	}
 
+// _________________________________________
+/*			  PRINT MATRIX				*/
 	std::cout << "MATRIX" << std::endl;
 	if(printMatrix(mainMassive, n, m) != 1){
 		delete [] massiveB;
@@ -70,25 +73,23 @@ int main(int argc, char *argv[]){
 	
 	createColumnB(mainMassive, massiveB, n);
 
+/*_________________________________________________*/
 
-
-
-/*
-_________________________________________________
 	auto begin = std::chrono::steady_clock::now();
 
 	// main function 
-	checkAccurancy();
+	findSolutionWithJordan();
 	// main function
 
 	auto end = std::chrono::steady_clock::now();
+	
 	auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
 	std::cout << "The time: " << elapsed_ms.count() << " ms\n";
 
-_________________________________________________
-*/
+/*_________________________________________________*/
 
-
+// _________________________________________
+/*			  PRINT ACCURACY				*/
 
 
 

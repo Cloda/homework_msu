@@ -57,7 +57,7 @@ double checkAccurancy(double *matrix, double *vector, double *B, int len){
 	}
 
     delete [] matrix_ON_vector;
-	return result;
+	return sqrt(result);
 }
 
 int createMatrixWithoutFile(double *mainMas, int n, int k){
