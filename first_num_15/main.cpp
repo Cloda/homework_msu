@@ -18,9 +18,10 @@ int main(int argc, char *argv[]){
 		filename - file name which consist matrix
 		mainMassive - main massive with matrix
 	*/
-	int n, m, k;
+	int n, m, k, i;
 	char *filename;
 	double *mainMassive; 
+	double *massiveB;
 
 	try {
 		n = atoi(argv[1]);
@@ -33,6 +34,7 @@ int main(int argc, char *argv[]){
 
 	try {
 		mainMassive = new double[n * n];
+		massiveB = new double[n];
 	} catch(...){
 		std::cout << "some trouble with memory" << std::endl;
 		return -2;
@@ -56,11 +58,20 @@ int main(int argc, char *argv[]){
 		}
 	}
 
+	std::cout << "MATRIX" << std::endl;
 	if(printMatrix(mainMassive, n, m) != 1){
 		delete [] mainMassive;
 		return -6;
 	}
+	std::cout << std::endl;
+	
+	createColumnB(mainMassive, massiveB, n);
 
+
+
+
+/*
+_________________________________________________
 	auto begin = std::chrono::steady_clock::now();
 
 	// main function 
@@ -70,6 +81,13 @@ int main(int argc, char *argv[]){
 	auto end = std::chrono::steady_clock::now();
 	auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
 	std::cout << "The time: " << elapsed_ms.count() << " ms\n";
+
+_________________________________________________
+*/
+
+
+
+
 
 	delete [] mainMassive;
 	return 1;

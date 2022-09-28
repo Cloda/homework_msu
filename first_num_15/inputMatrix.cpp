@@ -28,8 +28,20 @@ int multiMatrixOnVector(double *matrix, double *vector, double *result, int len)
     return 1;
 }
 
-double checkAccurancy(){
+int createColumnB(double *matrixForB, double *B, int len){
+    int i = 0, j = 0;
+    for(i = 0; i < len; i++){
+        B[i] = 0;
+        for(j = 0; j < len; j += 2){
+            B[i] += matrixForB[i*len + j];
+        }
+    }
+    return 1;
 }
+
+// double checkAccurancy(double *matrix, double *vector, double *B, double *memForAccur, int len){
+    
+// }
 
 int createMatrixWithoutFile(double *mainMas, int n, int k){
     double MACHINE_EPS = makeEPS();
