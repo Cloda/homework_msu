@@ -21,8 +21,7 @@ int main(int argc, char *argv[]){
 	*/
 	int n, m, k, i;
 	char *filename;
-	double *mainMassive; 
-	double *massiveB;
+	double *mainMassive, *massiveB, *massiveX;
 
 	try {
 		n = atoi(argv[1]);
@@ -36,6 +35,7 @@ int main(int argc, char *argv[]){
 	try {
 		mainMassive = new double[n * n];
 		massiveB = new double[n];
+		massiveX = new double[n];
 	} catch(...){
 		std::cout << "some trouble with memory" << std::endl;
 		return -2;
@@ -51,6 +51,7 @@ int main(int argc, char *argv[]){
 		if(createMatrixFromFile(filename, mainMassive, n) != 1){
 			delete [] mainMassive;
 			delete [] massiveB;
+			delete [] massiveX;
 			return -4;
 		}
 	} else {
@@ -67,6 +68,7 @@ int main(int argc, char *argv[]){
 	if(printMatrix(mainMassive, n, m) != 1){
 		delete [] massiveB;
 		delete [] mainMassive;
+		delete [] massiveX;
 		return -6;
 	}
 	std::cout << std::endl;
@@ -78,11 +80,11 @@ int main(int argc, char *argv[]){
 	auto begin = std::chrono::steady_clock::now();
 
 	// main function 
-	findSolutionWithJordan();
+	findSolutionWithJordan(mainMassive, massiveX, massiveB, n);
 	// main function
 
 	auto end = std::chrono::steady_clock::now();
-	
+
 	auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
 	std::cout << "The time: " << elapsed_ms.count() << " ms\n";
 
@@ -95,5 +97,6 @@ int main(int argc, char *argv[]){
 
 	delete [] mainMassive;
 	delete [] massiveB;
+	delete [] massiveX;
 	return 1;
 }

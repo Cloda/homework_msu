@@ -1,19 +1,21 @@
 #ifndef _MATRIX_OPETRATION
 #define _MATRIX_OPETRATION
+#define EPS 1e-99
+
 
 #include <iostream>
 #include <fstream>
 #include <cmath>
 
 double makeEPS();
-double _Max(double, double);
-double _Module(double, double);
-int multiMatrixOnVector(double *, double *, double *, int);     // multiply matrix on column
-int createColumnB(double *, double *, int);                     // creare column from matrix in addition formule
-double checkAccurancy(double *, double *, double *, int);       // residual norm
-int createMatrixFromFile(char *, double *, int);                // create matrix in form
-int createMatrixWithoutFile(double *, int, int);                // create matrix without file
-int printMatrix(double *, int, int);                            // output of matrix
+double _Max(double a, double b);
+double _Module(double a, double b);
+int multiMatrixOnVector(double *matrix, double *vector, double *memoryForResult, int len);     // multiply matrix on column
+int createColumnB(double *matrix, double *memoryForB, int len);                                // creare column from matrix in addition formule
+double checkAccurancy(double *A, double *vector, double *B, int len);                          // residual norm
+int createMatrixFromFile(char *fileName, double *memoryForElem, int len);                      // create matrix in form
+int createMatrixWithoutFile(double *matrix, int len, int option);                              // create matrix without file
+int printMatrix(double *matrix, int len, int endOfOutput);                                     // output of matrix
 
 
 #endif
