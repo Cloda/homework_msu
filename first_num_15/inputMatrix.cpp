@@ -39,9 +39,26 @@ int createColumnB(double *matrixForB, double *B, int len){
     return 1;
 }
 
-// double checkAccurancy(double *matrix, double *vector, double *B, double *memForAccur, int len){
+double checkAccurancy(double *matrix, double *vector, double *B, int len){
+    int i;
+	double result = 0., *matrix_ON_vector;
+
+    try{
+        matrix_ON_vector = new double[len];
+    } catch(...){
+        std::cout << "Matrix error: u haven't enough memory" << std::endl;
+        return -10;
+    }
     
-// }
+    multiMatrixOnVector(matrix, vector, matrix_ON_vector, len);
+
+    for(i = 0; i < len; i++){
+		result += matrix_ON_vector[i] * matrix_ON_vector[i] - B[i]; 
+	}
+
+    delete [] matrix_ON_vector;
+	return result;
+}
 
 int createMatrixWithoutFile(double *mainMas, int n, int k){
     double MACHINE_EPS = makeEPS();

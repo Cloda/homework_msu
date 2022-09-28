@@ -49,17 +49,20 @@ int main(int argc, char *argv[]){
 		}
 		if(createMatrixFromFile(filename, mainMassive, n) != 1){
 			delete [] mainMassive;
+			delete [] massiveB;
 			return -4;
 		}
 	} else {
 		if(createMatrixWithoutFile(mainMassive, n, k) != 1){
 			delete [] mainMassive;
+			delete [] massiveB;
 			return -5;
 		}
 	}
 
 	std::cout << "MATRIX" << std::endl;
 	if(printMatrix(mainMassive, n, m) != 1){
+		delete [] massiveB;
 		delete [] mainMassive;
 		return -6;
 	}
@@ -90,5 +93,6 @@ _________________________________________________
 
 
 	delete [] mainMassive;
+	delete [] massiveB;
 	return 1;
 }
