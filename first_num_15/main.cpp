@@ -1,6 +1,7 @@
 #include "inputMatrix.h"
 #include <iostream>
 #include <fstream>
+#include <chrono>
 
 int MethodJordan();
 
@@ -37,31 +38,38 @@ int main(int argc, char *argv[]){
 		return -2;
 	}
 
-	// if(k == 0){
-	// 	try {
-	// 		filename = argv[4];
-	// 	} catch(...){
-	// 		std::cout << "your name of file incorrect, pls try again" << std::endl;
-	// 		return -3;
-	// 	}
-	// 	if(createMatrixFromFile(filename, mainMassive, n) != 1){
-	// 		delete [] mainMassive;
-	// 		return -4;
-	// 	}
-	// } else {
-	// 	if(createMatrixWithoutFile(mainMassive, n, k) != 1){
-	// 		delete [] mainMassive;
-	// 		return -5;
-	// 	}
-	// }
+	if(k == 0){
+		try {
+			filename = argv[4];
+		} catch(...){
+			std::cout << "your name of file incorrect, pls try again" << std::endl;
+			return -3;
+		}
+		if(createMatrixFromFile(filename, mainMassive, n) != 1){
+			delete [] mainMassive;
+			return -4;
+		}
+	} else {
+		if(createMatrixWithoutFile(mainMassive, n, k) != 1){
+			delete [] mainMassive;
+			return -5;
+		}
+	}
 
-	// if(printMatrix(mainMassive, n, m) != 1){
-	// 	delete [] mainMassive;
-	// 	return -6;
-	// }
+	if(printMatrix(mainMassive, n, m) != 1){
+		delete [] mainMassive;
+		return -6;
+	}
 
-	std::cout << makeEPS() << std::endl;
+	auto begin = std::chrono::steady_clock::now();
 
+	// main function 
+	checkAccurancy();
+	// main function
+
+	auto end = std::chrono::steady_clock::now();
+	auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
+	std::cout << "The time: " << elapsed_ms.count() << " ms\n";
 
 	delete [] mainMassive;
 	return 1;

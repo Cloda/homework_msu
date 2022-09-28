@@ -7,38 +7,40 @@ double makeEPS(){
 		e /= 2;
 		n++;
 	}
-	// e = 1;
-	// for(;n>1;n--){
-	// 	e /= 2;
-	// }
+	e = 1;
+	for(; n > 1; n--){
+		e /= 2;
+	}
     return e;
 }
 
-double _Max(double a, double b){
-    if(a >= b){ return a; } 
-    return b;
+double _Max(double a, double b, double e){
+    return (a - b >= e) ? a : b;
 }
 
-double _Module(double a, double b){
-    if(a - b >= 0){ return a - b; }
-    return b - a;
+double _Module(double a, double b, double e){
+    return (a - b >= e) ? a - b : b - a;
+}
+
+double checkAccurancy(){
 }
 
 int createMatrixWithoutFile(double *mainMas, int n, int k){
+    double MACHINE_EPS = makeEPS();
     int i, j, l; // l - column, j - row
     for(i = 0; i < n * n; i++){
         j = i / n; 
         l = i % n;
         if(k == 1){
-            mainMas[i] = n - _Max(l, j) + 1;
+            mainMas[i] = n - _Max(l, j, MACHINE_EPS) + 1;
             continue;
         }
         if(k == 2){
-            mainMas[i] = _Max(l, j);
+            mainMas[i] = _Max(l, j, MACHINE_EPS);
             continue;
         }
         if(k == 3){
-            mainMas[i] = _Module(l, j);
+            mainMas[i] = _Module(l, j, MACHINE_EPS);
             continue;
         }
         if(k == 4){
