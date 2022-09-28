@@ -1,5 +1,19 @@
 #include "inputMatrix.h"
 
+double makeEPS(){
+    double e = 1;
+    int n = 0;
+	while(0 < 0 + e){
+		e /= 2;
+		n++;
+	}
+	// e = 1;
+	// for(;n>1;n--){
+	// 	e /= 2;
+	// }
+    return e;
+}
+
 double _Max(double a, double b){
     if(a >= b){ return a; } 
     return b;

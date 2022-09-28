@@ -37,28 +37,30 @@ int main(int argc, char *argv[]){
 		return -2;
 	}
 
-	if(k == 0){
-		try {
-			filename = argv[4];
-		} catch(...){
-			std::cout << "your name of file incorrect, pls try again" << std::endl;
-			return -3;
-		}
-		if(createMatrixFromFile(filename, mainMassive, n) != 1){
-			delete [] mainMassive;
-			return -4;
-		}
-	} else {
-		if(createMatrixWithoutFile(mainMassive, n, k) != 1){
-			delete [] mainMassive;
-			return -5;
-		}
-	}
+	// if(k == 0){
+	// 	try {
+	// 		filename = argv[4];
+	// 	} catch(...){
+	// 		std::cout << "your name of file incorrect, pls try again" << std::endl;
+	// 		return -3;
+	// 	}
+	// 	if(createMatrixFromFile(filename, mainMassive, n) != 1){
+	// 		delete [] mainMassive;
+	// 		return -4;
+	// 	}
+	// } else {
+	// 	if(createMatrixWithoutFile(mainMassive, n, k) != 1){
+	// 		delete [] mainMassive;
+	// 		return -5;
+	// 	}
+	// }
 
-	if(printMatrix(mainMassive, n, m) != 1){
-		delete [] mainMassive;
-		return -6;
-	}
+	// if(printMatrix(mainMassive, n, m) != 1){
+	// 	delete [] mainMassive;
+	// 	return -6;
+	// }
+
+	std::cout << makeEPS() << std::endl;
 
 
 	delete [] mainMassive;
