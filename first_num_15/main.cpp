@@ -2,7 +2,7 @@
 #include "_algorithm.h"
 #include <iostream>
 #include <fstream>
-#include <chrono>
+#include <time.h>
 
 int MethodJordan();
 
@@ -19,9 +19,10 @@ int main(int argc, char *argv[]){
 		filename - file name which consist matrix
 		mainMassive - main massive with matrix
 	*/
-	int n, m, k, i;
+	int n, m, k, i, errorInAlg;
 	char *filename;
 	double *mainMassive, *massiveB, *massiveX;
+	clock_t t;
 
 	try {
 		n = atoi(argv[1]);
@@ -76,24 +77,27 @@ int main(int argc, char *argv[]){
 	createColumnB(mainMassive, massiveB, n);
 
 /*_________________________________________________*/
-
-	auto begin = std::chrono::steady_clock::now();
-
+	t = clock();
 	// main function 
-	findSolutionWithJordan(mainMassive, massiveX, massiveB, n);
+	errorInAlg = findSolutionWithJordan(mainMassive, massiveX, massiveB, n);
 	// main function
+	t = clock() - t;
+	if(errorInAlg != 1){
+		std::cout << "u have singular matrix" << std::endl;
+		delete [] mainMassive;
+		delete [] massiveB;
+		delete [] massiveX;
+		return -11;
+	}
+	std::cout << "Time score: " << t << std::endl;
 
-	auto end = std::chrono::steady_clock::now();
-
-	auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
-	std::cout << "The time: " << elapsed_ms.count() << " ms\n";
 
 /*_________________________________________________*/
 
 // _________________________________________
 /*			  PRINT ACCURACY				*/
 
-
+	std::cout << checkAccurancy(mainMassive, massiveX, massiveB, n) << std::endl;
 
 	delete [] mainMassive;
 	delete [] massiveB;

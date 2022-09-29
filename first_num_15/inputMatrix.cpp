@@ -140,8 +140,8 @@ int createMatrixFromFile(char *nameFile, double *mainMas, int n){
     return 1;
 }
 
-int printMatrix(double *mainMas, int n, int m){
-    int i;
+int printObject(double *mainMas, int n, int m, int mode){
+    int i, len;
     
     if(m < 0){
         std::cout << "Matrix error: u enter m < 0" << std::endl;
@@ -151,9 +151,15 @@ int printMatrix(double *mainMas, int n, int m){
     if(n > m && m >= 0){
         n = m;
     }
+
+    if(mode){
+        len = n;
+    } else {
+        len = n*n;
+    }
     
     std::cout << "(";
-    for(i = 0; i < n * n; i++){
+    for(i = 0; i < len; i++){
         if(i % n == 0 && i != 0 && i != n * n - 1){
             std::cout << ")" << std::endl << "(";
         }
