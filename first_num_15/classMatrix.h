@@ -9,15 +9,18 @@
 class Matrix{
 
     private:
+
         double MACHINE_EPS; 
-        double *_matrix;
+        double *_matrix, *_vector;
         int _isMemory; // 1 - have memory
         int _isEmpty;  // 1 - have info
         int _size, _sizeInSquare;
         
-        double makeEPS();
-        double _Max(double a, double b);
-        double _Module(double a, double b);
+        double __makeEPS();
+        double __Max(double a, double b);
+        double __Module(double a, double b);
+
+        int __makeVectorFromMatrix();
 
     public:
         Matrix();
@@ -28,8 +31,11 @@ class Matrix{
         int makeMatrixWithFile(char *nameFile);
         int copyMatrixInMassive(double *to);
         int printMatrix(int sizeToPrint);
+        int printVector(int sizeToPrint);
 
         int findSolutionWithJordan(double *A, double *x, double *b, int n);
+
+        int checkCalulcation(double *A, double *x, double *b, int n);
 
         const Matrix & operator=(const Matrix &b);
         Matrix(const Matrix &a);

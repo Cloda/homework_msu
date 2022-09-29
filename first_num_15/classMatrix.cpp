@@ -1,5 +1,41 @@
 #include "classMatrix.h"
 
+int Matrix::printVector(int sizeToPrint){    
+    if(_isMemory){
+        int i, len = _size;
+    
+        if(sizeToPrint < 0){
+            std::cout << "Matrix error: u enter m < 0" << std::endl;
+            return -1;
+        }
+
+        if(_size > sizeToPrint){
+            len = sizeToPrint;
+        }
+
+        std::cout << "(";
+        for(i = 0; i < len; i++){
+            if(i % _size == 0 && i != 0 && i != _size - 1){
+                std::cout << ")" << std::endl << "(";
+            }
+            printf("%10.3e", _vector[i]);
+        }
+        std::cout << ")" << std::endl;
+    }
+
+    return 1;
+}
+
+int Matrix::__makeVectorFromMatrix(){
+    int i = 0, j = 0;
+    for(i = 0; i < _size; i++){
+        _vector[i] = 0;
+        for(j = 0; j < _size; j += 2){
+            _vector[i] += _matrix[i*_size + j];
+        }
+    }
+}
+
 int Matrix::printMatrix(int sizeToPrint){
     if(_isMemory){
         int i, len = _size;
@@ -37,7 +73,7 @@ int Matrix::copyMatrixInMassive(double *to){
     }
 }
 
-double Matrix::makeEPS(){
+double Matrix::__makeEPS(){
     double e = 1;
     int n = 0;
 	while(0 < 0 + e){ e /= 2; n++; }
@@ -46,21 +82,22 @@ double Matrix::makeEPS(){
     return e;
 }
 
-double Matrix::_Max(double a, double b){
+double Matrix::__Max(double a, double b){
     return (a - b >= MACHINE_EPS) ? a : b;
 }
 
-double Matrix::_Module(double a, double b){
+double Matrix::__Module(double a, double b){
     return (a - b >= MACHINE_EPS) ? a - b : b - a;
 }
 
 Matrix::Matrix(int size){
-    MACHINE_EPS = makeEPS();
+    MACHINE_EPS = __makeEPS();
     _size = size;
     _sizeInSquare = _size * _size;
     if(size){
         try{
 		    _matrix = new double[_sizeInSquare];
+            _vector = new double[_size];
             _isMemory = 1;
 	    } catch(...){
 		    std::cout << "Matrix errors: some trouble with memory" << std::endl;
@@ -81,15 +118,15 @@ int Matrix::makeMatrixWithFormule(int modeGenerate){
             for(i = 0; i < _size; i++){
                 for(j = 0; j < _size; j++){
                     if(modeGenerate == 1){
-                        _matrix[i*_size + j] = _size - _Max(i + 1, j + 1) + 1;
+                        _matrix[i*_size + j] = _size - __Max(i + 1, j + 1) + 1;
                         continue;
                     }
                     if(modeGenerate == 2){
-                        _matrix[i*_size + j] = _Max(i + 1, j + 1);
+                        _matrix[i*_size + j] = __Max(i + 1, j + 1);
                         continue;
                     }
                     if(modeGenerate == 3){
-                        _matrix[i*_size + j] = _Module(i + 1, j + 1);
+                        _matrix[i*_size + j] = __Module(i + 1, j + 1);
                         continue;
                     }
                     if(modeGenerate == 4){
@@ -105,6 +142,7 @@ int Matrix::makeMatrixWithFormule(int modeGenerate){
             }
 
             _isEmpty = 1;
+            __makeVectorFromMatrix();
         } else {
             std::cout << "Matrix message: u have a full matrix^ pls make new object" << std::endl;
         }
@@ -162,6 +200,8 @@ int Matrix::makeMatrixWithFile(char *nameFile){
             }
             
             fp.close();
+            __makeVectorFromMatrix();
+
         } else {
             std::cout << "Matrix message: u have a full matrix^ pls make new object" << std::endl;
         }
