@@ -62,28 +62,29 @@ double checkAccurancy(double *matrix, double *vector, double *B, int len){
 
 int createMatrixWithoutFile(double *mainMas, int n, int k){
     double MACHINE_EPS = makeEPS();
-    int i, j, l; // l - column, j - row
-    for(i = 0; i < n * n; i++){
-        j = i / n; 
-        l = i % n;
-        if(k == 1){
-            mainMas[i] = n - _Max(l, j, MACHINE_EPS) + 1;
-            continue;
-        }
-        if(k == 2){
-            mainMas[i] = _Max(l, j, MACHINE_EPS);
-            continue;
-        }
-        if(k == 3){
-            mainMas[i] = _Module(l, j, MACHINE_EPS);
-            continue;
-        }
-        if(k == 4){
-            mainMas[i] = 1./(l + j - 1);
-        }
-        else {
-            std::cout << "Matrix error: u enter k > 4" << std::endl;
-            return -1;
+    int i, j, l; // i - column, j - row
+    for(i = 0; i < n; i++){
+        for(j = 0; j < n; j++){
+            if(k == 1){
+                mainMas[i*n + j] = n - _Max(l, j, MACHINE_EPS) + 1;
+                continue;
+            }
+            if(k == 2){
+                mainMas[i*n + j] = _Max(l, j, MACHINE_EPS);
+                continue;
+            }
+            if(k == 3){
+                mainMas[i*n + j] = _Module(l, j, MACHINE_EPS);
+                continue;
+            }
+            if(k == 4){
+                // что делать с делением на ноль!!!!!!!!!!!!
+                mainMas[i*n + j] = 1./(l + j - 1);
+            }
+            else {
+                std::cout << "Matrix error: u enter k > 4" << std::endl;
+                return -1;
+            }
         }
     }
 

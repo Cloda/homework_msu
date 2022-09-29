@@ -66,7 +66,7 @@ int main(int argc, char *argv[]){
 // _________________________________________
 /*			  PRINT MATRIX				*/
 	std::cout << "MATRIX" << std::endl;
-	if(printMatrix(mainMassive, n, m) != 1){
+	if(printObject(mainMassive, n, m, 0) != 1){
 		delete [] massiveB;
 		delete [] mainMassive;
 		delete [] massiveX;
@@ -82,6 +82,7 @@ int main(int argc, char *argv[]){
 	errorInAlg = findSolutionWithJordan(mainMassive, massiveX, massiveB, n);
 	// main function
 	t = clock() - t;
+
 	if(errorInAlg != 1){
 		std::cout << "u have singular matrix" << std::endl;
 		delete [] mainMassive;
@@ -89,7 +90,10 @@ int main(int argc, char *argv[]){
 		delete [] massiveX;
 		return -11;
 	}
+	
+	printObject(massiveX, n, m, 1);
 	std::cout << "Time score: " << t << std::endl;
+
 
 
 /*_________________________________________________*/

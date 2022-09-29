@@ -15,7 +15,7 @@ int createColumnB(double *matrix, double *memoryForB, int len);                 
 double checkAccurancy(double *A, double *vector, double *B, int len);                          // residual norm
 int createMatrixFromFile(char *fileName, double *memoryForElem, int len);                      // create matrix in form
 int createMatrixWithoutFile(double *matrix, int len, int option);                              // create matrix without file
-int printObeject(double *matrix, int len, int endOfOutput, int mode);                                     // output of matrix
+int printObject(double *matrix, int len, int endOfOutput, int mode);                                     // output of matrix
 
 
 #endif
