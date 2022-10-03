@@ -1,5 +1,42 @@
 #include "classMatrix.h"
 
+double checkCalculation(Matrix &A, double *x){
+    if(A._isEmpty){
+        int i, j, len = A._size;
+        double trash, result = 0.;
+        
+        for(i = 0; i < len; i++){
+            trash = 0.;
+            for(j = 0; j < len; j++){
+                trash += A._matrix[i*A._size + j] * x[j];
+            }
+            
+
+            result += (trash - A._vector[i]) * (trash - A._vector[i]);
+
+        }
+        return sqrt(result);
+    }
+	
+    return -100000;
+}
+
+Matrix::Matrix(){
+    std::cout << "Matrix message: u make empty matrix" << std::endl;
+    _isEmpty = 0;
+    _isMemory = 0;
+}
+
+Matrix::~Matrix(){
+    if(_isMemory){
+        delete [] _matrix;
+    }
+}
+
+int Matrix::findSolutionWithJordan(double *memoryForAnswer){
+    return __findSolutionWithJordan(_size, _matrix, _vector, memoryForAnswer);
+}
+
 int Matrix::printVector(int sizeToPrint){    
     if(_isMemory){
         int i, len = _size;
@@ -18,7 +55,7 @@ int Matrix::printVector(int sizeToPrint){
             if(i % _size == 0 && i != 0 && i != _size - 1){
                 std::cout << ")" << std::endl << "(";
             }
-            printf("%10.3e", _vector[i]);
+            printf(" %10.3e ", _vector[i]);
         }
         std::cout << ")" << std::endl;
     }
@@ -26,7 +63,7 @@ int Matrix::printVector(int sizeToPrint){
     return 1;
 }
 
-int Matrix::__makeVectorFromMatrix(){
+void Matrix::__makeVectorFromMatrix(){
     int i = 0, j = 0;
     for(i = 0; i < _size; i++){
         _vector[i] = 0;
@@ -60,17 +97,6 @@ int Matrix::printMatrix(int sizeToPrint){
     }
 
     return 1;
-}
-
-int Matrix::copyMatrixInMassive(double *to){
-    int i;
-    for(i = 0; i < _sizeInSquare; i++){
-        try{
-            to[i] = _matrix[i];
-        } catch(...) {
-            std::cout << "Matrix errors: fail in your massive" << std::endl;
-        }
-    }
 }
 
 double Matrix::__makeEPS(){
@@ -260,4 +286,6 @@ const Matrix & Matrix::operator=(const Matrix &a){
 
     _isMemory = 1;
     _isEmpty = 1;
+
+    return *this;
 }

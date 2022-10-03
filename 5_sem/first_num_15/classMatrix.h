@@ -1,9 +1,10 @@
-#ifndef __CLASS_OF_MATRIX_
+#ifndef __CLASS_OF_MATRIX__
 #define __CLASS_OF_MATRIX__
 
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include "_algorithm.h"
 
 
 class Matrix{
@@ -20,7 +21,7 @@ class Matrix{
         double __Max(double a, double b);
         double __Module(double a, double b);
 
-        int __makeVectorFromMatrix();
+        void __makeVectorFromMatrix();
 
     public:
         Matrix();
@@ -29,29 +30,17 @@ class Matrix{
 
         int makeMatrixWithFormule(int modeGenerate);
         int makeMatrixWithFile(char *nameFile);
-        int copyMatrixInMassive(double *to);
         int printMatrix(int sizeToPrint);
         int printVector(int sizeToPrint);
+ 
 
-        int findSolutionWithJordan(double *A, double *x, double *b, int n);
-
-        int checkCalulcation(double *A, double *x, double *b, int n);
+        int findSolutionWithJordan(double *memoryForAnswer);
+        friend double checkCalculation(Matrix &A, double *x);
 
         const Matrix & operator=(const Matrix &b);
         Matrix(const Matrix &a);
 };
 
-Matrix::Matrix(){
-    std::cout << "Matrix message: u make empty matrix" << std::endl;
-    _isEmpty = 0;
-    _isMemory = 0;
-}
-
-Matrix::~Matrix(){
-    if(_isMemory){
-        delete [] _matrix;
-    }
-}
 
 
 #endif

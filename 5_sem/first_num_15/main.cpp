@@ -1,14 +1,7 @@
-#include "inputMatrix.h"
-#include "_algorithm.h"
+#include "classMatrix.h"
 #include <iostream>
 #include <fstream>
 #include <time.h>
-
-int MethodJordan();
-
-int MethodJordan(){
-    return 1;
-}
 
 
 int main(int argc, char *argv[]){
@@ -21,7 +14,7 @@ int main(int argc, char *argv[]){
 	*/
 	int n, m, k, i, errorInAlg;
 	char *filename;
-	double *mainMassive, *massiveB, *massiveX;
+	double *massiveX;
 	clock_t t;
 
 	try {
@@ -34,13 +27,14 @@ int main(int argc, char *argv[]){
 	}
 
 	try {
-		mainMassive = new double[n * n];
-		massiveB = new double[n];
 		massiveX = new double[n];
 	} catch(...){
 		std::cout << "some trouble with memory" << std::endl;
 		return -2;
 	}
+
+	Matrix matrix = Matrix(n);
+
 
 	if(k == 0){
 		try {
@@ -49,62 +43,62 @@ int main(int argc, char *argv[]){
 			std::cout << "your name of file incorrect, pls try again" << std::endl;
 			return -3;
 		}
-		if(createMatrixFromFile(filename, mainMassive, n) != 1){
-			delete [] mainMassive;
-			delete [] massiveB;
+		if(matrix.makeMatrixWithFile(filename) != 1){
 			delete [] massiveX;
 			return -4;
 		}
 	} else {
-		if(createMatrixWithoutFile(mainMassive, n, k) != 1){
-			delete [] mainMassive;
-			delete [] massiveB;
+		if(matrix.makeMatrixWithFormule(k) != 1){
 			return -5;
 		}
 	}
 
+
 // _________________________________________
 /*			  PRINT MATRIX				*/
+	std::cout << std::endl;
 	std::cout << "MATRIX" << std::endl;
-	if(printObject(mainMassive, n, m, 0) != 1){
-		delete [] massiveB;
-		delete [] mainMassive;
+	if(matrix.printMatrix(m) != 1){
 		delete [] massiveX;
 		return -6;
 	}
 	std::cout << std::endl;
 	
-	createColumnB(mainMassive, massiveB, n);
 
 /*_________________________________________________*/
+/*				  START ALGORITHM				*/
 	t = clock();
-	// main function 
-	errorInAlg = findSolutionWithJordan(mainMassive, massiveX, massiveB, n);
-	// main function
+
+	errorInAlg = matrix.findSolutionWithJordan(massiveX);
+
+
 	t = clock() - t;
+
+/*_________________________________________________*/
+/*			  PRINT B and WORK TIME				*/
 
 	if(errorInAlg != 1){
 		std::cout << "u have singular matrix" << std::endl;
-		delete [] mainMassive;
-		delete [] massiveB;
 		delete [] massiveX;
 		return -11;
 	}
 	
-	printObject(massiveX, n, m, 1);
-	std::cout << "Time score: " << t << std::endl;
+	matrix.printVector(m);
+	std::cout << "Time score: " << (double)t / CLOCKS_PER_SEC << std::endl;
+	std::cout << std::endl;
 
 
 
-/*_________________________________________________*/
 
 // _________________________________________
 /*			  PRINT ACCURACY				*/
 
-	std::cout << checkAccurancy(mainMassive, massiveX, massiveB, n) << std::endl;
+	std::cout << "Accurancy: " << checkCalculation(matrix, massiveX) << std::endl;
 
-	delete [] mainMassive;
-	delete [] massiveB;
+// _________________________________________
+
+
 	delete [] massiveX;
+
 	return 1;
 }
