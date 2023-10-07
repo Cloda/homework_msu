@@ -21,16 +21,14 @@ double seriesOfFurierAtPoint(int NUMBER_OF_DOTS, double *MATRIX_C_nk, double var
 // ___________________________________________
 /*			  MAIN CONSTANT AND FUNC    		*/
 
-const int NUMBER_OF_DOTS = 10;
-const int TEST_FOR_CONVERGE = 4;
+const int NUMBER_OF_DOTS = 20;
+const int TEST_FOR_CONVERGE = 2;
 
 
 
 double u(double x, double y){
-    return x*x*x*x - x*x*x + y*y*y*y - y*y*y;
-    // return x*x*x*x - x*x*x;
-    // return 4*sin(PI * x)*sin(PI * y);
-//    return 1/(1+25*x*x) - 1/26;
+    // return x*x*x*x - x*x*x + y*y*y*y - y*y*y;
+    return cos(PI * (2 - (double)1./2.) * x) * cos(PI * (2 - (double)1./2.) * y);
     // return 1 ? x < 0.5 && x > 0.4: 0;
 }
 // ___________________________________________
@@ -56,14 +54,14 @@ int main(){
     try {
         MASSIVE_LOGNORM = new double[TEST_FOR_CONVERGE];
         MASSIVE_LOGHIGH = new double[TEST_FOR_CONVERGE];
-        MATRIX_C_nk = new double[TEST_FOR_CONVERGE*(NUMBER_OF_DOTS)*(NUMBER_OF_DOTS)+1];
-        MATRIX_OF_U = new double[TEST_FOR_CONVERGE*(NUMBER_OF_DOTS)*(NUMBER_OF_DOTS)+1];
-        _trashMatrix = new double [TEST_FOR_CONVERGE*(NUMBER_OF_DOTS)*(NUMBER_OF_DOTS)+1];
+        MATRIX_C_nk = new double[(TEST_FOR_CONVERGE+2)*(TEST_FOR_CONVERGE+2)*(NUMBER_OF_DOTS + 1)*(NUMBER_OF_DOTS + 1)];
+        MATRIX_OF_U = new double[(TEST_FOR_CONVERGE+2)*(TEST_FOR_CONVERGE+2)*(NUMBER_OF_DOTS+ 1)*(NUMBER_OF_DOTS + 1)];
+        _trashMatrix = new double [(TEST_FOR_CONVERGE+2)*(TEST_FOR_CONVERGE+2)*(NUMBER_OF_DOTS + 1)*(NUMBER_OF_DOTS+ 1)];
 
-        _trashMassive_1 = new double[TEST_FOR_CONVERGE*(NUMBER_OF_DOTS) + 1];
-        _trashMassive_2 = new double[TEST_FOR_CONVERGE*(NUMBER_OF_DOTS) + 1];
-        MASSIVE_OF_U = new double[TEST_FOR_CONVERGE*(NUMBER_OF_DOTS) + 1];
-        MASSIVE_OF_DOTS = new double[TEST_FOR_CONVERGE*(NUMBER_OF_DOTS) + 1];
+        _trashMassive_1 = new double[(TEST_FOR_CONVERGE+2)*(NUMBER_OF_DOTS+1)];
+        _trashMassive_2 = new double[(TEST_FOR_CONVERGE+2)*(NUMBER_OF_DOTS + 1)];
+        MASSIVE_OF_U = new double[(TEST_FOR_CONVERGE+2)*(NUMBER_OF_DOTS+ 1)];
+        MASSIVE_OF_DOTS = new double[(TEST_FOR_CONVERGE+2)*(NUMBER_OF_DOTS+1)];
 
         } catch(...){
 		std::cout << "Some trouble with memory" << std::endl;
@@ -72,8 +70,13 @@ int main(){
 
     // _________________________________________________
     // заполнение массивов для тестов
+
+
+    hForNorm = 1 / ((double)(NUMBER_OF_DOTS * 5));
+    MaxForNorm = MACHINE_EPS;
+
     for(i = 1; i < TEST_FOR_CONVERGE + 1; i++){
-        if(makePoints((NUMBER_OF_DOTS)*i, MASSIVE_OF_DOTS) != 1){
+        if(makePoints((NUMBER_OF_DOTS + 1)*i, MASSIVE_OF_DOTS) != 1){
             std::cout << "ERROR IN make_points.cpp" << std::endl;
             delete [] MASSIVE_LOGHIGH;
             delete [] MASSIVE_LOGNORM;
@@ -91,35 +94,30 @@ int main(){
 
 
         // заполнили U
-        for(l = 0; l < i*(NUMBER_OF_DOTS) + 1; l++){
-            for(j = 0; j < i*(NUMBER_OF_DOTS) + 1; j++){
+        for(l = 0; l < i*(NUMBER_OF_DOTS + 1); l++){
+            for(j = 0; j < i*(NUMBER_OF_DOTS + 1); j++){
                 // добавить проверку на краевые условия
-                temp = (l*(i*(NUMBER_OF_DOTS) + 1) + j);
-                if(l == i*NUMBER_OF_DOTS || j == i*NUMBER_OF_DOTS){
-                    MATRIX_OF_U[temp] = 0.;
-                } else {
-                    MATRIX_OF_U[temp] = u(MASSIVE_OF_DOTS[l], MASSIVE_OF_DOTS[j]);
-                }
+                temp = (l*(i*(NUMBER_OF_DOTS + 1)) + j);
+                MATRIX_OF_U[temp] = u(MASSIVE_OF_DOTS[l], MASSIVE_OF_DOTS[j]);
             }
         }
 
 
          // найдем коэфиценты в ряде
-        makeAnalysis_C_nk(NUMBER_OF_DOTS*i, MASSIVE_OF_DOTS, _trashMatrix, _trashMassive_1, _trashMassive_2, MATRIX_OF_U, MATRIX_C_nk);
+        makeAnalysis_C_nk((NUMBER_OF_DOTS+1)*i - 1, MASSIVE_OF_DOTS, _trashMatrix, _trashMassive_1, _trashMassive_2, MATRIX_OF_U, MATRIX_C_nk);
 
 
-        hForNorm = 1 / ((double)(NUMBER_OF_DOTS * i));
-        MaxForNorm = MACHINE_EPS;
+        
         for (double x = 0; x < 1; x += hForNorm){
             for(double y= 0; y < 1; y += hForNorm){
                 trash = seriesOfFurierAtPoint(NUMBER_OF_DOTS, MATRIX_C_nk, x, y) - u(x, y);
-                if (abs(trash) > MaxForNorm)
-                    MaxForNorm = abs(trash);
+                if (fabs(trash) > MaxForNorm)
+                    MaxForNorm = fabs(trash);
             }
 
         }
         MASSIVE_LOGNORM[i - 1] = log(1 / MaxForNorm);
-        MASSIVE_LOGHIGH[i - 1] = log(1 / hForNorm);
+        MASSIVE_LOGHIGH[i - 1] = log(i*NUMBER_OF_DOTS);
 
     }
     
@@ -136,7 +134,7 @@ int main(){
     if(outFile.is_open()){
         for(i = 0; i < TEST_FOR_CONVERGE; i++){
             outFile << std::setprecision(15)
-                    << MASSIVE_LOGHIGH[i] << " " << MASSIVE_LOGNORM[i] << std::endl;
+                    << MASSIVE_LOGHIGH[i] << " " << -MASSIVE_LOGNORM[i] << std::endl;
         }
     } else {
         std::cout << "ERROR: u cant create out.txt" << std::endl;
@@ -222,7 +220,7 @@ int main(){
         trash += 0.5 * ((MASSIVE_LOGNORM[i] - MASSIVE_LOGNORM[i - 1]) / (MASSIVE_LOGHIGH[i] - MASSIVE_LOGHIGH[i - 1]));
     }
 
-    std::cout << trash << std::endl;
+    std::cout << -trash << std::endl;
 
 
     // ____________________________________________
