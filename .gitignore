@@ -7,3 +7,5 @@
 *.dSYM
 *.o
 *.png
+ref
+conv
