@@ -26,8 +26,8 @@ const int NUMBER_OF_DOTS = 20;
 
 double u(double x, double y){
     // return x*x*x*x - x*x*x + y*y*y*y - y*y*y;
-    return cos(PI * (2 - (double)1./2.) * x) * cos(PI * (2 - (double)1./2.) * y);
-    // return 1 ? x < 0.5 && x > 0.4: 0;
+    // return cos(PI * (2 - (double)1./2.) * x) * cos(PI * (2 - (double)1./2.) * y);
+    return 1 ? x < 0.5 && x > 0.4 && y > 0.4 && y < 0.5: 0;
 }
 // ___________________________________________
 
@@ -90,6 +90,14 @@ int main(){
         }
     }
 
+    // for(i = 0; i < NUMBER_OF_DOTS + 1; i++){
+    //     for(j = 0; j < NUMBER_OF_DOTS + 1; j++){
+    //         std::cout << MASSIVE_OF_DOTS[i] << " -> " << MASSIVE_OF_DOTS[j] << " -> " << MATRIX_OF_U[i*(NUMBER_OF_DOTS+1) + j] << std::endl;
+    //     }
+    // }
+
+
+
 
 
     // найдем коэфиценты в ряде
@@ -103,33 +111,36 @@ int main(){
 
 
 
+
+
+
+
+
     // _________________________________________________
     // запись в файл
 
     nameFile = "out.txt";
     outFile.open(nameFile.c_str());
-    double dot_now_x, dot_next_x, dot_now_y, dot_next_y, temp_x, temp_y; // добавим в файл промежуточные точки
     if(outFile.is_open()){
-        for(i = 0; i < NUMBER_OF_DOTS; i++){
-            dot_now_x = MASSIVE_OF_DOTS[i];
-            dot_next_x = MASSIVE_OF_DOTS[i + 1];
-            
-            for(j = 0; j < NUMBER_OF_DOTS; j++){
+        double dot_now_x, dot_next_x, dot_now_y, dot_next_y, temp_x, temp_y; // добавим в файл промежуточные точки
+        for(i = 1; i < NUMBER_OF_DOTS; i++){
+            for(j = 1; j < NUMBER_OF_DOTS; j++){
+                dot_now_x = MASSIVE_OF_DOTS[i];
+                dot_next_x = MASSIVE_OF_DOTS[i + 1];
                 dot_now_y = MASSIVE_OF_DOTS[j];
                 dot_next_y = MASSIVE_OF_DOTS[j + 1];
-
                 outFile << std::setprecision(15)
                         << dot_now_x << " " << dot_now_y << " " << seriesOfFurierAtPoint(NUMBER_OF_DOTS, MATRIX_C_nk, dot_now_x, dot_now_y) 
                                      << " " << u(dot_now_x, dot_now_y) << std::endl;
                 
-                temp_x = 2*dot_now_x / 3. + dot_next_x / 3.;
-                temp_y = 2*dot_now_y / 3. + dot_next_y / 3.;
+                temp_x = 2*dot_now_x / 3 + dot_next_x / 3;
+                temp_y = 2*dot_now_y / 3 + dot_next_y / 3;
                 outFile << std::setprecision(15) 
                         << temp_x << " " << temp_y << " " << seriesOfFurierAtPoint(NUMBER_OF_DOTS, MATRIX_C_nk, temp_x, temp_y) 
                                   << " "  << u(temp_x, temp_y) << std::endl;
                 
-                temp_x = dot_now_x / 3. + 2*dot_next_x / 3.;
-                temp_y = dot_now_y / 3. + 2*dot_next_y / 3.;
+                temp_x = dot_now_x / 3 + 2*dot_next_x / 3;
+                temp_y = dot_now_y / 3 + 2*dot_next_y / 3;
                 outFile << std::setprecision(15)
                         << temp_x << " " << temp_y << " " << seriesOfFurierAtPoint(NUMBER_OF_DOTS, MATRIX_C_nk, temp_x, temp_y) 
                                   << " "  << u(temp_x, temp_y) << std::endl;
@@ -147,11 +158,6 @@ int main(){
         delete [] MASSIVE_OF_DOTS;
         return -4;
     }
-    dot_next_x = MASSIVE_OF_DOTS[NUMBER_OF_DOTS];
-    outFile << std::setprecision(15)
-                        << dot_next_x << " " << dot_next_x << " " << seriesOfFurierAtPoint(NUMBER_OF_DOTS, MATRIX_C_nk, dot_next_x, dot_next_x) 
-                                  << " "  << u(dot_next_x, dot_next_x) << std::endl;
-
     outFile.close();
    
 
@@ -161,8 +167,8 @@ int main(){
     
     outFile.open(nameFile.c_str());
     if(outFile.is_open()){
-       outFile << "set terminal png size 1000,1000 \n" << std::endl;
-       outFile << "set output \"test.png\" \n" << std::endl;
+//        outFile << "set terminal png size 1000,1000 \n" << std::endl;
+//        outFile << "set output \"test.png\" \n" << std::endl;
         outFile << "splot 'out.txt' u 1:2:3 w linesp title 'Fourier', 'out.txt' u 1:2:4 w linesp title 'u' pt -1 \\" << std::endl;
     } else {
         std::cout << "ERROR: u cant create gnu.txt" << std::endl;
@@ -219,6 +225,17 @@ int main(){
 
 // ____________________________________________
 
+// double seriesOfFurierAtPoint(int N, double *koef, double var_x, double var_y){
+//     double result = 0;
+//     int i, j;
+//     for(i = 1; i < N; i++){
+//         for(j = 1; j < N; j++){
+//             result += koef[i*(N+1) + j] * sin(PI * (2*i - 1) * var_x) * sin(PI * (2*j - 1) * var_y);
+//         }
+//     }
+//     return result;
+// }
+
 double seriesOfFurierAtPoint(int N, double *koef, double var_x, double var_y){
     double result = 0;
     int i, j;
@@ -229,41 +246,5 @@ double seriesOfFurierAtPoint(int N, double *koef, double var_x, double var_y){
     }
     return result;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

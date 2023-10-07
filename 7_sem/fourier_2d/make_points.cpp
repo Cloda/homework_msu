@@ -21,20 +21,21 @@ int makePoints(int NUMBER_OF_DOTS, double *MASSIVE_OF_DOTS){
     return 1;
 }
 
+
 int makeKoef_C_nk(int NUMBER_OF_DOTS, double *MASSIVE_OF_U, double *MASSIVE_OF_DOTS,
                      double *MASSIVE_C_nk, double *_trashMassive){
     double result = 0, h = (double) 1. / (NUMBER_OF_DOTS - 0.5);
     int m, k;
 
-    for(m = 1; m < NUMBER_OF_DOTS; m++){
+    for(m = 0; m < NUMBER_OF_DOTS + 1; m++){
 
-        
-        for(k = 1; k < NUMBER_OF_DOTS; k++){
-            _trashMassive[k] = cos( PI * (m - (double)1./2.) * MASSIVE_OF_DOTS[k]);
-        }
-        
         result = 0;
-        for(k = 1; k < NUMBER_OF_DOTS; k++){
+        for(k = 1; k < NUMBER_OF_DOTS + 1; k++){
+            _trashMassive[k] = cos( PI * (m - (double)1./2.) * MASSIVE_OF_DOTS[k]);
+
+        }
+
+        for(k = 1; k < NUMBER_OF_DOTS + 1; k++){
             result += _trashMassive[k] * MASSIVE_OF_U[k] * h;
         } 
 
