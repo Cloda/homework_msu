@@ -20,12 +20,13 @@ double seriesOfFurierAtPoint(int NUMBER_OF_DOTS, double *MATRIX_C_nk, double var
 // ___________________________________________
 /*			  MAIN CONSTANT AND FUNC    		*/
 
-const int NUMBER_OF_DOTS = 5;
+const int NUMBER_OF_DOTS = 50;
 
 
 
 double u(double x, double y){
-    return x*x*x*x - x*x*x + y*y*y*y - y*y*y;
+    // return x*x*x*x - x*x*x + y*y*y*y - y*y*y;
+    return cos(PI * (2 - (double)1./2.) * x) * cos(PI * (2 - (double)1./2.) * y);
     // return 1/(1+25*x*x) - 1/26;
     // return 1 ? x < 0.5 && x > 0.4: 0;
 }
