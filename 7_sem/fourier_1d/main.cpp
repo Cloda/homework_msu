@@ -116,8 +116,8 @@ int main(){
     outFile.open(nameFile.c_str());
 
     if(outFile.is_open()){
-       outFile << "set terminal png size 1000,1000 \n" << std::endl;
-       outFile << "set output \"test.png\" \n" << std::endl;
+        outFile << "set terminal png size 1000,1000 \n" << std::endl;
+        outFile << "set output \"test.png\" \n" << std::endl;
         outFile << "plot 'out.txt' u 1:2 w linesp title 'Fourier', 'out.txt' u 1:3 w linesp title 'u' pt -1 \\" << std::endl;
     } else {
         std::cout << "ERROR: u cant create gnu.txt" << std::endl;
