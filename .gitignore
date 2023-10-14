@@ -1,6 +1,7 @@
 .DS_Store
 .vscode
 *.txt
+!config.txt
 *.0
 *.out
 *.zip
