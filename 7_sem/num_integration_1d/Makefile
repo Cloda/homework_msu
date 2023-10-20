@@ -2,12 +2,11 @@ TARGET_MAIN = ref
 TARGET_CONV = conv
 
 OBJECTS_MAIN = main.o integr_methods.o
-OBJECTS_CONV = converge.o make_points.o
 
 CC = g++
 
 CFLAGS = -c
-#CFLAGS = -c -g
+# CFLAGS = -c -g
 # CFLAGS = -std=c++11 -c -Wall -O3
 # CFLAGS = -c -W -Wall -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wcast-align \
 -Wformat-security -Wmissing-format-attribute -Wformat=1 \
@@ -38,11 +37,9 @@ main.o: main.cpp
 integr_methods.o: integr_methods.cpp
 	$(CC) $(CFLAGS) integr_methods.cpp
 	
-converge.o: converge.cpp
-	$(CC) $(CFLAGS) converge.cpp
+
 
 	
 .PHONY: clean
 clean:
 	-rm -f $(OBJECTS_MAIN) $(TARGET_MAIN) out.txt gnu.txt *.png
-	-rm -f $(OBJECTS_CONV) $(TARGET_CONV)
