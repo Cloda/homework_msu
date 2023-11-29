@@ -1,4 +1,5 @@
 #include "_lib.h"
+const long double MACHINE_EPS = 1e-12;
 
 // --------------------------------------------
 // --------------------------------------------
@@ -48,7 +49,7 @@ double FourierMethod(double *A, double *b, int N, double *x, double p, double *_
 }
 
 
-double Richardson(double *x, double *A, double *b, double eps, double tau, int n, int mIter, double *_trash){
+double Richardson(double *x, double *A, double *b, double tau, int n, int mIter, double *_trash){
     // возвращаем норму
     int i, j;
     double flag = 0;
@@ -64,68 +65,58 @@ double Richardson(double *x, double *A, double *b, double eps, double tau, int n
             x[j] = x[j] - tau * _trash[j] + tau * b[j];
             // printf("%1.15lf = %1.15lf - %1.15lf * %1.15lf + %1.15lf * %1.15lf \n", x[j], _trash[j], tau, _trash[j], tau, b[j]);
         }
-
-        flag = __euclid_calculate_norm_vec(_trash, b, n);
-        if(flag < eps){
-            // printf("step = %d\n", i);
-            return flag;
-        }
     }
 
-    return flag;
+    __dot_matrix_on_vec(A, x, _trash, n);
+
+    return __euclid_calculate_norm_vec(_trash, b, n) / (double) n;
 }
 
 
-double BSolver(double *x, double *A, double *B, double *b, double tau, int n, double eps, int mIter, double *_trash, double p){
+double BSolver(double *x, double *A, double *B, double *b, double tau, int n, int mIter, double *_trash, double p){
    // возвращаем норму
     int i, j;
-    double flag = 0;
-    double *eig_vec = new double[n+1];
-    double *y_vec = new double[n+1];
+    double *eig_vec = new double[n + 1];
+    double *y_vec = new double[n + 1];
+    // double *temp = new double[n + 1];
+
 
     for (i = 0; i < n + 1; i++){
         x[i] = 0;
         _trash[i] = 0;
+        eig_vec[i] = 0;
+        y_vec[i] = 0;
+        // temp[i] = 0;
     }
 
     for (i = 0; i < mIter; i++){
         __dot_matrix_on_vec(A, x, _trash, n);
+        
         for (j = 0; j < n + 1; j++){
             _trash[j] = b[j] - _trash[j];
         }
-        
+        // printf("_trash = ");
+        // print_vector(_trash, n);
+
         FourierMethod(B, _trash, n, eig_vec, p, y_vec);
-       
+        
         for (j = 0; j < n + 1; j++){
-            x[j] = x[j] + tau * y_vec[j];
+            x[j] = x[j] + tau * eig_vec[j];
         }
+        // printf("eig_vec = ");
+        // print_vector(eig_vec, n);
         
-        
-        __dot_matrix_on_vec(A, x, y_vec, n);
-        
-        // для сходимости смотрим на норму бесконеч
-        flag = __infty_calculate_norm_vec(y_vec, b, n);
-        
-        if(flag < eps){
-            // printf("step = %d\n", i);
-
-            for(int k = 0; k < n + 1; k++){
-                _trash[k] =  y_vec[k];
-            }
-
-            delete [] eig_vec;
-            delete [] y_vec;
-            return flag;
-        }
     }
     
-    for(int k = 0; k < n + 1; k++){
-        _trash[k] =  y_vec[k];
-    }
+    __dot_matrix_on_vec(A, x, _trash, n);
+    // printf("temp = ");
+    // print_vector(temp, n);
     
     delete [] eig_vec;
     delete [] y_vec;
-    return flag;
+    // delete [] temp;
+ 
+    return __infty_calculate_norm_vec(_trash, b, n);
 }
 
 double find_q_for_conv(double *A, int n){
@@ -143,7 +134,7 @@ double find_q_for_conv(double *A, int n){
             }
         }
 
-        sample_for_q = sum / fabs(A[i*(n + 1) + i]);
+        sample_for_q = sum / fabs(A[i * (n + 1) + i]);
 
         if(sample_for_q > 1){
             printf("bad q, would havent conv\n");
@@ -191,28 +182,33 @@ double __euclid_calculate_norm_vec(double *x, double *y, int N){
     double res = 0;
 
     for (i = 0; i < N + 1; i++){
-        res += (x[i] - y[i]) * (x[i] - y[i]);
-    }
-
-    return sqrt(res);
-}
-
-double __infty_calculate_norm_vec(double *x, double *y, int N){
-    int i = 0;
-    double res = 0;
-
-    for (i = 0; i < N + 1; i++){
-        if(fabs(x[i] - y[i]) > res)
-        res = fabs(x[i] - y[i]);
+        if (fabs(x[i] - y[i]) < MACHINE_EPS){
+            continue;
+        }
+        // printf("%lf - %lf \n", x[i], y[i]);
+       res += (x[i] - y[i]) * (x[i] - y[i]);
     }
 
     return res;
 }
 
-void __dot_matrix_on_vec(double *A, double *x, double *res, int N){
-    int i, j;
+double __infty_calculate_norm_vec(double *x, double *y, int N){
+    int i = 0;
+    double res = MACHINE_EPS;
+
     for (i = 0; i < N + 1; i++){
-        res[i] = 0;
+        if(fabs(x[i] - y[i]) > res) res = fabs(x[i] - y[i]);
+    }
+
+    return sqrt(res);
+}
+
+void __dot_matrix_on_vec(double *A, double *x, double *res, int N){
+
+    int i, j;
+
+    for (i = 0; i < N + 1; i++){
+        res[i] = 0.;
         for (j = 0; j < N + 1; j++){
             res[i] += A[i * (N + 1) + j] * x[j];
         }
@@ -244,11 +240,11 @@ void __fillMatrix(double *A, int N, double p, bool custom_h, bool custom_p){
         for(j = 0; j < N + 1; j++){
             if(i == j && i > 0 && j > 0 && i < N && j < N){
                 if(custom_p){
-                    p = 1 + sin(PI*j*h)*sin(PI*j*h);
+                    p = 1. + sin(PI*(j+1)*h)*sin(PI*(j+1)*h);
+//                     p = 1.;
                 }
                 A[i * (N + 1) + j] = p + 2.0 * h * h;
             } else if ((i - j == -1 || i - j == 1) && i != 0 && i != N){
-                // проверить 
                 A[i * (N + 1) + j] = -1.0 * h * h;
             } 
             else if (i == 0 && j == 0){
@@ -257,14 +253,6 @@ void __fillMatrix(double *A, int N, double p, bool custom_h, bool custom_p){
             else if (i == N && j == N){
                 A[i * (N + 1) + j] = 1.0;
             }
-//             else if (i == 0 && j == 0){
-//                 A[i * (N + 1) + j] = -1.0;
-//             }
-//             else if (i == 0 && j == 1){
-//                 A[i * (N + 1) + j] = 1.0;
-//             } else if (i == N && j == N){
-//                 A[i * (N + 1) + j] = 1.0;
-//             }
             else {
                 A[i * (N + 1) + j] = 0.;
             }

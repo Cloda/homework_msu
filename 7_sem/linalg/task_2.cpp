@@ -11,9 +11,10 @@ int main(){
     int N, i;
     
     double tau = 0.1;
-    double eps = 1e-12;
-    int step_for_iter = 350;
-    int finish_for_conv = 450;
+    // double eps = 1e-12;
+    int step_for_iter = 25;
+    int start_for_conv = 1;
+    int finish_for_conv = 1000;
     double result_norm_resid;
     double q;
     double dq = 1;
@@ -69,27 +70,28 @@ int main(){
 
     tau = 2. / (m + M);
     
-    result_norm_resid = Richardson(x, A, b, eps, tau, N, step_for_iter, _trash);
+    result_norm_resid = Richardson(x, A, b, tau, N, 1, _trash);
     printf("residual = %20.15lf \n", result_norm_resid);
 
-    printf("result = ");
-    print_vector(_trash, N);
-     printf("answer = ");
-    print_vector(b, N);
+//    printf("result = ");
+//    print_vector(_trash, N);
+//     printf("answer = ");
+//    print_vector(b, N);
 
     q = (M - m) / (M + m);
-    printf("q = %20.15lf \n", q);
+//    printf("q = %20.15lf \n", q);
 
 
     outFile_1.open(out);
     // outFile_2.open(out_plot);
     if(outFile_1.is_open()){
-        for(i = step_for_iter; i < finish_for_conv; i+= 10){
-            result_norm_resid = Richardson(x, A, b, eps, tau, N, i, _trash);
+        for(i = start_for_conv; i < finish_for_conv + 2; i += step_for_iter){
+            result_norm_resid = Richardson(x, A, b, tau, N, i, _trash);
+
             outFile_1 << std::setprecision(15) << i << " " << result_norm_resid << " " << dq*result_norm_resid << std::endl;
             // надо отрисовать какие то графики
             // outFile_2 << std::setprecision(15) << i << " " << result_norm_resid << " " << dq*result_norm_resid << std::endl;
-            dq *= q; // геометрич прогр
+            dq *= q;
         }
     } else {
         std::cout << "ERROR: u cant create out_2_conv.txt" << std::endl;
@@ -106,8 +108,8 @@ int main(){
     outFile_1.open(gnu);
     // outFile_2.open(gnu_plot);
     if(outFile_1.is_open()){
-            // outFile_1 << "set terminal png size 1000,1000 \n" << std::endl;
-            // outFile_1 << "set output \"test.png\" \n" << std::endl;
+//             outFile_1 << "set terminal png size 1000,1000 \n" << std::endl;
+//             outFile_1 << "set output \"test.png\" \n" << std::endl;
             outFile_1 << "plot 'out_2_conv.txt' u 1:2 w linesp title 'result practice', 'out_2_conv.txt' u 1:3 w linesp title 'result theory' \\" << std::endl;
         //    outFile_2 << "plot 'out_2_conv.txt' u 1:2 w linesp title 'result practice', 'out_2_conv.txt' u 1:3 w linesp title 'result theory' \\" << std::endl;
     } else {

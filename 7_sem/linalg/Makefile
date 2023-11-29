@@ -11,8 +11,8 @@ OBJECTS_THREE = task_3.o _lib.o
 CC = g++
 
 # CFLAGS = -c
-# CFLAGS = -c -g
-CFLAGS = -std=c++11 -c -Wall -O3
+CFLAGS = -c -g
+#CFLAGS = -std=c++11 -c -Wall -O3
 # CFLAGS = -c -W -Wall -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wcast-align \
 -Wformat-security -Wmissing-format-attribute -Wformat=1 \
 -Wno-long-long -Wcast-align -Winline -Werror -pedantic -pedantic-errors \
