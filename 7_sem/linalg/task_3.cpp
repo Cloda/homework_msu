@@ -13,9 +13,9 @@ int main(){
 
     double tau = 1.;
     // double tau = 0.1;
-    int step_for_iter = 100;
+    int step_for_iter = 1;
     int start_for_conv = 1;
-    int finish_for_conv = 1000;
+    int finish_for_conv = 20;
     double result_norm_resid;
     double q = 1;
     double dq = 1;
@@ -58,13 +58,13 @@ int main(){
     // ЗАДАНИЕ 3
 
 
-    __fillMatrix(A, N, p, true, true);
-    // __fillMatrix(A, N, p, false, false);
-    // printf("matrix A = ");
-    // print_matrix(A, N);
+    __fillMatrix(A, N, p, false, true);
+//     __fillMatrix(A, N, p, false, false);
+    //  printf("matrix A = ");
+    //  print_matrix(A, N);
 
     __fillMatrix(B, N, p, false, false);
-    // __fillMatrix(B, N, p, true, true);
+//     __fillMatrix(B, N, p, true, true);
 
     // for(int i = 0; i < N + 1; i++){
     //     for(int j = 0; j < N + 1; j++){
@@ -77,12 +77,12 @@ int main(){
     //     }   
     // }
 
-    // printf("matrix B = ");
-    // print_matrix(B, N);
+    //  printf("matrix B = ");
+    //  print_matrix(B, N);
 
     __make_coef_b(A, N, b);
-    // printf("b = ");
-    // print_vector(b, N);
+//     printf("b = ");
+//     print_vector(b, N);
 
     result_norm_resid = BSolver(x, A, B, b, tau, N, 1, result_b, p);
 
@@ -91,8 +91,8 @@ int main(){
     printf("residual(infty) = %20.15lf \n", result_norm_resid);
     printf("residual(euclid) = %20.15lf \n", __euclid_calculate_norm_vec(result_b, b, N));
 
-    // printf("result b = ");
-    // print_vector(result_b, N);
+//     printf("result b = ");
+//     print_vector(result_b, N);
     // printf("x = ");
     // print_vector(x, N);
 
@@ -140,8 +140,8 @@ int main(){
 
         outFile_1.open(gnu);
         if(outFile_1.is_open()){
-                outFile_1 << "set terminal png size 1000,1000 \n" << std::endl;
-                outFile_1 << "set output \"plot_res.png\" \n" << std::endl;
+//                outFile_1 << "set terminal png size 1000,1000 \n" << std::endl;
+//                outFile_1 << "set output \"plot_res.png\" \n" << std::endl;
                 outFile_1 << "plot 'out_3_conv.txt' u 1:2 w linesp title 'result practice(norm = infty)', 'out_3_conv.txt' u 1:3 w linesp title 'result theory(norm = infty)' \\" << std::endl;
         } else {
             std::cout << "ERROR: u cant create out_3_conv.txt and out_3_conv.txt" << std::endl;
