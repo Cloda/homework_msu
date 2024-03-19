@@ -1,3 +1,5 @@
+// Ib this scope u need to check your solution in the discrete time
+
 #include <iostream>
 #include <math.h>
 
