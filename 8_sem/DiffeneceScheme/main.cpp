@@ -1,46 +1,31 @@
-#include <stdio.h>
 #include <iostream>
-#include <math.h>
+#include <cmath>
+#include <fstream>
 
-using namespace std;
-
-double *Method_1(double y_0, int N, double A)
+void SchemaFirst(double *y, double y_0, int N, double A)
 {
-
-    double *y = (double *)calloc(N, sizeof(double));
-
     y[0] = y_0;
-    double h = 1 / (double)N;
+    double h = 1 / static_cast<double>(N);
 
     for (int i = 1; i < N; i++)
     {
         y[i] = (1 - A * h) * y[i - 1];
     }
-
-    return y;
 }
 
-double *Method_2(double y_0, int N, double A)
+void SchemaSecond(double *y, double y_0, int N, double A)
 {
-
-    double *y = (double *)calloc(N, sizeof(double));
-
     y[0] = y_0;
-    double h = 1 / (double)N;
+    double h = 1 / static_cast<double>(N);
 
     for (int i = 1; i < N; i++)
     {
         y[i] = y[i - 1] / (1 + A * h);
     }
-
-    return y;
 }
 
-double *Method_3(double y_0, int N, double A)
+void SchemaThird(double *y, double y_0, int N, double A)
 {
-
-    double *y = (double *)calloc(N, sizeof(double));
-
     y[0] = y_0;
     double h = 1 / (double)N;
 
@@ -48,15 +33,10 @@ double *Method_3(double y_0, int N, double A)
     {
         y[i] = (2 - A * h) * y[i - 1] / (2 + A * h);
     }
-
-    return y;
 }
 
-double *Method_4(double y_0, double y_1, int N, double A)
+void SchemaFourth(double *y, double y_0, double y_1, int N, double A)
 {
-
-    double *y = (double *)calloc(N, sizeof(double));
-
     y[0] = y_0;
     y[1] = y_1;
     double h = 1 / (double)N;
@@ -65,15 +45,10 @@ double *Method_4(double y_0, double y_1, int N, double A)
     {
         y[i] = y[i - 2] - 2 * h * A * y[i - 1];
     }
-
-    return y;
 }
 
-double *Method_5(double y_0, double y_1, int N, double A)
+void SchemaFifth(double *y, double y_0, double y_1, int N, double A)
 {
-
-    double *y = (double *)calloc(N, sizeof(double));
-
     y[0] = y_0;
     y[1] = y_1;
     double h = 1 / (double)N;
@@ -82,15 +57,10 @@ double *Method_5(double y_0, double y_1, int N, double A)
     {
         y[i] = (2 * y[i - 1] - 0.5 * y[i - 2]) / (1.5 + A * h);
     }
-
-    return y;
 }
 
-double *Method_6(double y_0, double y_1, int N, double A)
+void SchemaSixth(double *y, double y_0, double y_1, int N, double A)
 {
-
-    double *y = (double *)calloc(N, sizeof(double));
-
     y[0] = y_0;
     y[1] = y_1;
     double h = 1 / (double)N;
@@ -99,78 +69,108 @@ double *Method_6(double y_0, double y_1, int N, double A)
     {
         y[i] = 2 * (2 * y[i - 1] - (1.5 - A * h) * y[i - 2]);
     }
-
-    return y;
 }
 
-double *Method(int number_method, int N, double A)
+void chooseSchema(double *y, int regime, int N, double A)
 {
-    double *y = NULL;
-    double h = 1 / (double)N;
+    double h = 1 / static_cast<double>(N);
 
-    switch (number_method)
+    switch (regime)
     {
-    case 1:
-        y = Method_1(1, N, A);
-        break;
-    case 2:
-        y = Method_2(1, N, A);
-        break;
-    case 3:
-        y = Method_3(1, N, A);
-        break;
-    case 4:
-        y = Method_4(1, 1 - A * h, N, A);
-        break;
-    case 5:
-        y = Method_5(1, 1 - A * h, N, A);
-        break;
-    case 6:
-        y = Method_6(1, 1 - A * h, N, A);
-        break;
+        case 1:
+            SchemaFirst(y, 1, N, A);
+            break;
+        case 2:
+            SchemaSecond(y, 1, N, A);
+            break;
+        case 3:
+            SchemaThird(y, 1, N, A);
+            break;
+        case 4:
+            SchemaFourth(y, 1, 1 - A * h, N, A);
+            break;
+        case 5:
+            SchemaFifth(y, 1, 1 - A * h, N, A);
+            break;
+        case 6:
+            SchemaSixth(y, 1, 1 - A * h, N, A);
+            break;
     }
-
-    return y;
 }
 
-double E_n(int number_method, int n, double A)
+double findMaximumDifference(int regime, int n, double A, double left_dot, double right_dot)
 {
-    int N = pow(10, n);
+    int N = std::pow(10, n);
+    double *y = new double[N];
+    chooseSchema(y, regime, N, A);
 
-    double *y = Method(number_method, N, A);
-
-    double max = fabs(y[0] - 1);
+    double max = std::fabs(y[0] - 1);
 
     for (int i = 0; i < N; i++)
     {
-        if (max < fabs(y[i] - exp(-A * (i / (double)N))))
+        double diff = std::fabs(y[i] - std::exp(-A * (right_dot - left_dot) * (i / static_cast<double>(N))));
+        if (max < diff)
         {
-            max = fabs(y[i] - exp(-A * (i / (double)N)));
+            max = diff;
         }
     }
 
-    free(y);
+    delete[] y;
 
     return max;
 }
 
-int main() {
+int main()
+{
+    int listFor_A[3] = {1, 10, 1000};
+    int amountOfSchems = 6;
+    int listFor_n[4] = {1, 2, 3, 6};
+    double left = 0.;
+    double right_1 = 1.;
+    double right_2 = 0.1;
 
-	double A = 1;
-	int n = 1;
-	int number_method = 1;
+    // double A = 10;
+    // double n = 10;
+    // double schema = 1;
+    // std::cout << findMaximumDifference(schema, n, A, left, right_1) << std::endl;
 
-	cout << "   Введите значение параметра А" << endl;
-	cin >> A;
 
-	cout << "   Введите значения порядка дробления узлов n" << endl;
-	cin >> n;
+    std::ofstream big_interval("big_interval.txt");
+    std::ofstream small_interval("small_interval.txt");
 
-	cout << "   Введите номер разностной схемы" << endl;
-	cin >> number_method;
+    if (!big_interval || !small_interval) {
+        std::cerr << "Ошибка при открытии файла для записи." << std::endl;
+        return -1;
+    }
 
-	cout << E_n(number_method, n, A) << endl;
+    big_interval << "№ " << "E1 " << "E2 " << "E2 " 
+                 << "E3 " << "E6 " << "m " << "A "
+                 << std::endl;
 
-	return 0;
+    small_interval << "№ " << "E1 " << "E2 " << "E2 " 
+                   << "E3 " << "E6 " << "m " << "A "
+                   << std::endl;
 
+    // Schemas
+    for(int i = 0; i < amountOfSchems; i++)
+    {
+        // A
+        for(int j = 0; j < 3; j++)
+        {
+            big_interval << i << " ";
+            small_interval << i << " ";
+            // E_n
+            for(int k = 0; k < 4; k++)
+            {
+                big_interval << findMaximumDifference(i, listFor_n[k], listFor_A[j], left, right_1) << " ";
+                small_interval << findMaximumDifference(i, listFor_n[k], listFor_A[j], left, right_2) << " ";
+
+            }
+            big_interval << "m " << listFor_A[j] << std::endl;
+            small_interval << "m " << listFor_A[j] << std::endl;
+        }
+    }
+
+
+    return 0;
 }
