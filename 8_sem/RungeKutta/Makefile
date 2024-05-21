@@ -1,30 +1,28 @@
-TARGET_MAIN = ref
+TARGET = main
 
-OBJECTS_MAIN = main.o func.o coef.cpp
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c11
 
-CC = g++
+SRCS = main.c func.c scheme.c
 
-CFLAGS = -c
+HEADERS = func.h scheme.h
+OBJS = $(SRCS:.c=.o)
 
-# красный шрифт
-RED_FONT = \033[31m
-STANDART_FORMAT = \033[0m
+all: $(TARGET)
 
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
 
-all: $(OBJECTS_MAIN)
-	$(CC) $(OBJECTS_MAIN) -o $(TARGET_MAIN)
-	@echo "$(STANDART_FORMAT)run with formula: $(RED_FONT)./ref"
-	
-main.o: main.cpp
-	$(CC) $(CFLAGS) main.cpp
+%.o: %.c $(HEADERS)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-func.o: func.cpp
-	$(CC) $(CFLAGS) func.cpp
-	
-coef.o: coef.cpp
-	$(CC) $(CFLAGS) coef.cpp
-
-	
-.PHONY: clean
 clean:
-	-rm -f $(OBJECTS_MAIN) $(TARGET_MAIN)
+	rm -f $(OBJS) $(TARGET)
+	rm -f *.png
+	rm -f *.txt
+	
+run: $(TARGET)
+	./$(TARGET)
+
+plot: $(TARGET)
+	./$(TARGET)
