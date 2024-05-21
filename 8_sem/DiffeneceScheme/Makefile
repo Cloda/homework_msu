@@ -25,3 +25,4 @@ main.o: main.cpp
 .PHONY: clean
 clean:
 	-rm -f $(OBJECTS_MAIN) $(TARGET_MAIN)
+	rm -f *.txt
