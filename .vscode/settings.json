@@ -64,6 +64,8 @@
         "unordered_map": "cpp",
         "variant": "cpp",
         "vector": "cpp",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "math.h": "c",
+        "sweepmethod.h": "c"
     }
 }

@@ -15,6 +15,54 @@ double full_b_f(double * b, double (*f)(double), int N){
     return 0.;
 }
 
+void analytical_solution(double * y_exact, double * x, int N)
+{
+    for (int i = 0; i < N + 1; i++)
+    {
+        y_exact[i] = x[i] * (1 - x[i]) / 2.0;
+    }
+}
+
+void draw_plots(const char *filename, const char *outputfile) {
+    FILE *gnuplot = popen("gnuplot -persistent", "w");
+    if (gnuplot == NULL) {
+        fprintf(stderr, "Error: Unable to open pipe to Gnuplot.\n");
+        exit(1);
+    }
+
+    // Настройка Gnuplot
+
+    fprintf(gnuplot, "set terminal pngcairo size 800,600 enhanced font 'Verdana,10'\n");
+    fprintf(gnuplot, "set output '%s'\n", outputfile);
+    fprintf(gnuplot, "set title 'Difference between Numerical and Analytical Solutions'\n");
+    fprintf(gnuplot, "set xlabel 'x'\n");
+    fprintf(gnuplot, "set ylabel 'Value'\n");
+    fprintf(gnuplot, "set grid\n");
+    fprintf(gnuplot, "set style line 1 lc rgb 'blue' lt 1 lw 2\n");
+    fprintf(gnuplot, "set style line 2 lc rgb 'red' lt 2 lw 2\n");
+    fprintf(gnuplot, "plot '%s' using 1:2 with lines linestyle 2 title 'Numerical', \\\n", filename);
+    fprintf(gnuplot, "     '%s' using 1:3 with lines linestyle 1 title 'Analytical'\n", filename);
+}
+
+void write_results_to_file(const char * filename, double * approx, double * exact, int N, double *x)
+{
+    FILE * file = fopen(filename, "w");
+    if (file == NULL)
+    {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    fprintf(file, "x\tNumerical\tAnalytical\tDifference\n");
+    for (int i = 0; i < N + 1; i++)
+    {
+        double difference = approx[i] - exact[i];
+        fprintf(file, "%lf\t%lf\t%lf\t%lf\n", x[i], approx[i], exact[i], difference);
+    }
+
+    fclose(file);
+}
+
 int main()
 {
     int N = 6;  // Задаем количество точек
@@ -22,22 +70,38 @@ int main()
     double *b;
     double *x;
     double *mem;
+    double *x_values;
+    double *exact;
 
     b = (double *)malloc((N + 1) * sizeof(double));
     x = (double *)malloc((N + 1) * sizeof(double));
     mem = (double *)malloc((N + 1) * sizeof(double));
+    x_values = (double *)malloc((N + 1) * sizeof(double));
+    exact = (double *)malloc((N + 1) * sizeof(double));
     
+    for (int i = 0; i < N + 1; i++)
+    {
+        x_values[i] = (double)i / N;
+    }
+
     full_b_f(b, f, N);
     FourierMethod(x, N, p, b);
-    
-    printf("b: ");
-    print_vector(b, N + 1);
+    analytical_solution(exact, x_values, N);
+
     printf("ans: ");
     print_vector(x, N + 1);
+    printf("exact: ");
+    print_vector(exact, N + 1);
+
+    write_results_to_file("results.txt", x, exact, N, x_values);
+    draw_plots("results.txt", "difference_plot.png");
+
 
     free(b);
     free(x);
     free(mem);
+    free(x_values);
+    free(exact);
 
     return 0;
 }
