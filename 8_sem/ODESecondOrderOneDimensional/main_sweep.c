@@ -15,7 +15,7 @@ double analytical_solution(double x) {
     return C * exp(x) - (1 + C) * exp(-x) + 1;
 }
 
-void generate_gnuplot_script(const char *filename, const char *outputfile) {
+void draw_plots(const char *filename, const char *outputfile) {
     FILE *gnuplot = popen("gnuplot -persistent", "w");
     if (gnuplot == NULL) {
         fprintf(stderr, "Error: Unable to open pipe to Gnuplot.\n");
@@ -90,7 +90,7 @@ int main() {
     }
 
     fclose(file);
-    generate_gnuplot_script("results.txt", "difference_plot.png");
+    draw_plots("results.txt", "difference_plot.png");
 
     // Освобождение памяти
     free(a);
