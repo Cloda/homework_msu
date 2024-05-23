@@ -30,9 +30,9 @@ int main()
     full_b_f(b, f, N);
     FourierMethod(x, N, p, b);
     
-    // printf("b: ");
-    // print_vector(b, N + 1);
-    // printf("ans: ");
+    printf("b: ");
+    print_vector(b, N + 1);
+    printf("ans: ");
     print_vector(x, N + 1);
 
     free(b);
