@@ -5,14 +5,23 @@
 double func(double x){ 
     UNUSED(x);
     return 1.0; 
+    // return sin(x);
 }
 double p(double x){ 
     UNUSED(x);
     return 1.0; 
+    // return 0.0; 
 }
 double analytical_solution(double x) {
+    // для p==1 f==1
     double C = -1 / (exp(1) + 1);
     return C * exp(x) - (1 + C) * exp(-x) + 1;
+    
+    // для p==0 f==1
+    // return x * (1 - x) / 2.0;
+    
+    // для p==0 f==sinx
+    // return  -x*sin(1) + sin(x);
 }
 
 void draw_plots(const char *filename, const char *outputfile) {

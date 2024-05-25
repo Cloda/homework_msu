@@ -42,7 +42,7 @@ void SchemaFourth(double *y, double y_0, double y_1, int N, double A)
     double h = 1 / (double)N;
 
     for (int i = 2; i < N; i++)
-    {
+    {   
         y[i] = y[i - 2] - 2 * h * A * y[i - 1];
     }
 }
@@ -157,17 +157,19 @@ int main()
         // A
         for(int j = 0; j < 3; j++)
         {
+
             big_interval << i << " ";
             small_interval << i << " ";
             // E_n
             for(int k = 0; k < 4; k++)
             {
+                
                 big_interval << findMaximumDifference(i, listFor_n[k], listFor_A[j], left, right_1) << " ";
                 small_interval << findMaximumDifference(i, listFor_n[k], listFor_A[j], left, right_2) << " ";
 
             }
-            big_interval << "m " << listFor_A[j] << std::endl;
-            small_interval << "m " << listFor_A[j] << std::endl;
+            big_interval << listFor_A[j] << std::endl;
+            small_interval << listFor_A[j] << std::endl;
         }
     }
 
