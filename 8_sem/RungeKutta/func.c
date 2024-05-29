@@ -18,13 +18,15 @@ void solution1(double x, double *y, double *ans, int n) {
 // синус косинус
 void calculateF0(double x, double *y, double *ans, int n) {
     UNUSED(x);
-    UNUSED(y);
+    // UNUSED(y);
     if (n != 2) {
         printf("Total error! \n\n");
         return;
     }
-     ans[0] = y[1];
-     ans[1] = -y[0];
+    ans[0] = y[1];
+    ans[1] = -y[0];
+    // ans[0] = cos(x);
+    // ans[1] = sin(x);
 }
 
 // точное

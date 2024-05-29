@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 
-// Функция для теста 1
+// Функция для экспоненты
 void test1(int iterations);
 void test1(int iterations) {
     double x = 0;
@@ -27,12 +27,10 @@ void test1(int iterations) {
     }
     y[0] = 1;
 
-    // Заголовки столбцов
     fprintf(file, "x realans0 y0\n");
 
     for(int j = 0; j < iterations; j++) {
         x += 0.01;
-
         solution1(x, y, realans, N);
         yNext(x, y, ans, N, 0.01, calculateF1, mem, mem1, mem2, mem3);
         y[0] = ans[0];
@@ -78,7 +76,6 @@ void test2(int iterations) {
 
     for(int j = 0; j < iterations; j++) {
         x += 0.01;
-
         solution2(x, y, realans, N);
         yNext(x, y, ans, N, 0.01, calculateF2, mem, mem1, mem2, mem3);
         y[0] = ans[0];
@@ -96,7 +93,7 @@ void test2(int iterations) {
 
 }
 
-// Функция для теста 3
+// Функция для экспоненты
 void test3(int iterations);
 void test3(int iterations) {
     double x = 0;
@@ -122,11 +119,11 @@ void test3(int iterations) {
     fprintf(file, "x realans0 y0 realans1 y1\n");
 
     for(int j = 0; j < iterations; j++) {
+        x += 0.01;
         solution3(x, y, realans, N);
         yNext(x, y, ans, N, 0.01, calculateF3, mem, mem1, mem2, mem3);
         y[0] = ans[0];
         y[1] = ans[1];
-        x += 0.01;
         fprintf(file, "%lf %lf %lf %lf %lf\n", x, realans[0], y[0], realans[1], y[1]);
     }
 
@@ -141,7 +138,7 @@ void test3(int iterations) {
 
 }
 
-// Функция для теста 4
+// Функция для два многочлена
 void test4(int iteration);
 void test4(int iterations) {
     double x = 0;
@@ -167,7 +164,6 @@ void test4(int iterations) {
     y[0] = 1;
     y[1] = -1;
 
-    // Заголовки столбцов
     fprintf(file, "x realans0 y0 realans1 y1 L0norm L0normOne En\n");
 
     for(int j = 0; j < iterations; j++) {
@@ -190,7 +186,7 @@ void test4(int iterations) {
     free(realans);
 }
 
-// Функция для теста 5
+// Функция для экспонента синус
 void test5(int iterations);
 void test5(int iterations) {
     double x = 0;
@@ -241,11 +237,12 @@ void test5(int iterations) {
     free(realans);
 }
 
-// Функция для теста 4
+// Функция для синус косинус
 void test0(int iteration);
 void test0(int iterations) {
     double x = 0;
-    double h = (3.1415)/ ((double)iterations);
+    // double h = (3.1415)/ ((double)iterations);
+    double h = 7.0/ ((double)iterations);
     int N = 2;
 
     double *y = (double*) malloc(N * sizeof(double));
@@ -268,17 +265,16 @@ void test0(int iterations) {
     y[1] = 1;
 
     // Заголовки столбцов
-    fprintf(file, "x realans0 y0 realans1 y1 L0norm L0normOne En\n");
+    fprintf(file, "x realans0 y0 realans1 y1 L0norm L0normOne\n");
 
-    for(int j = 0; j < iterations + 1; j++) {
-        x += h;
-
+    for(int j = 1; j < iterations + 1; j++) {
         solution0(x, y, realans, N);
-        E(x, y, ans, N, h, calculateF0, mem, mem1, mem2, mem3);
         yNext(x, y, ans, N, h, calculateF0, mem, mem1, mem2, mem3);
+        
+        fprintf(file, "%e %e %e %e %e %e %e\n", x, realans[0], y[0], realans[1], y[1], calculateL0norm(realans, y, N), calculateL0normOne(ans, N));
         y[0] = ans[0];
         y[1] = ans[1];
-        fprintf(file, "%e %e %e %e %e %e %e\n", x, realans[0], y[0], realans[1], y[1], calculateL0norm(realans, y, N), calculateL0normOne(ans, N));
+        x += h;
 
     }
 
@@ -320,45 +316,46 @@ void plot_results(const char *filename, const char *outputfile) {
 int main(void) {
     int iterations;
 
-    printf("Running test 1...\n");
-    iterations = 100;
-    test1(iterations);
+    // printf("Running test 1...\n");
+    // iterations = 100;
+    // test1(iterations);
 
-    printf("Running test 2...\n");
-    iterations = 1000;
-    test2(iterations);
+    // printf("Running test 2...\n");
+    // iterations = 1000;
+    // test2(iterations);
 
-    printf("Running test 3...\n");
-    iterations = 100;
-    test3(iterations);
+    // printf("Running test 3...\n");
+    // iterations = 100;
+    // test3(iterations);
 
-    printf("Running test 4...\n");
-    iterations = 100;
-    test4(iterations);
+    // printf("Running test 4...\n");
+    // iterations = 100;
+    // test4(iterations);
 
-    printf("Running test 5...\n");
-    iterations = 100;
-    test5(iterations);
+    // printf("Running test 5...\n");
+    // iterations = 200;
+    // test5(iterations);
 
     printf("Running test 0...\n");
     iterations = 100;
+    // iterations = 1000;
     test0(iterations);
 
     // Рисование графиков
-    printf("Plotting results for out1.txt...\n");
-    plot_results("out1.txt", "results1.png");
+    // printf("Plotting results for out1.txt...\n");
+    // plot_results("out1.txt", "results1.png");
 
-    printf("Plotting results for out2.txt...\n");
-    plot_results("out2.txt", "results2.png");
+    // printf("Plotting results for out2.txt...\n");
+    // plot_results("out2.txt", "results2.png");
 
-    printf("Plotting results for out3.txt...\n");
-    plot_results("out3.txt", "results3.png");
+    // printf("Plotting results for out3.txt...\n");
+    // plot_results("out3.txt", "results3.png");
 
-    printf("Plotting results for out4.txt...\n");
-    plot_results("out4.txt", "results4.png");
+    // printf("Plotting results for out4.txt...\n");
+    // plot_results("out4.txt", "results4.png");
 
-    printf("Plotting results for out5.txt...\n");
-    plot_results("out5.txt", "results5.png");
+    // printf("Plotting results for out5.txt...\n");
+    // plot_results("out5.txt", "results5.png");
 
     printf("Plotting results for out0.txt...\n");
     plot_results("out0.txt", "results0.png");
