@@ -12,7 +12,7 @@ double lambda_m(int m, int N)
 }
 
 
-int main()
+int main(void)
 {
     int N = 10;
     double h = 1. / ((double)N - 0.5);
@@ -22,6 +22,7 @@ int main()
     double lambda = 0.;
     double value_right = 0.;
     double value_left = 0.;
+    double x_0 = -h / 2.;
 
     double max_error = 0.;
 
@@ -50,31 +51,33 @@ int main()
 
     // напечатаем матрицу грамма и найдем самую неортогональную пару(есть вектора при разных m)
     // строки - фиксированное m и переменное k(те собственный вектор)
-
-    // выпишем большую матрицу векторов
+    // по строчкам собственные функции
     std::cout << "Martix with eigenvectors" << std::endl;
     for(int m = 0; m < N; m++){
         for(int k = 0; k < N; k++){
+            double x_k = x_0 + (double)k*h;
             matrixVectors[m*N + k] = y_k(k, m, N);
             std::cout << matrixVectors[m*N + k] << " ";
         }
-
         std::cout << std::endl;
     }
     std::cout << std::endl;
 
 
     std::cout << "Martix Gramma" << std::endl;
-    double temp = 0, max_nonorthog = 0;
-    for(int vectorOne = 0; vectorOne < N ; vectorOne++){
-        for(int vectorTwo = 0; vectorTwo < N; vectorTwo++){
+    double temp = 0, max_nonorthog = 10.0;
+    for(int vectorOne = 1; vectorOne < N ; vectorOne++){
+        for(int vectorTwo = 1; vectorTwo < N; vectorTwo++){
             temp = 0.;
             // temp += matrixGramma[l * (N - 1) + 0] * matrixGramma[r * (N - 1) + 0] * h / 2;
-            for(int index = 0; index < N; index++){
+            // for(int index = 0; index < N; index++){
+            for(int index = 1; index < N; index++){
                 temp += matrixVectors[vectorOne * N + index] * matrixVectors[vectorTwo * N + index] * h;
+                // temp += matrixVectors[vectorOne * index + N] * matrixVectors[vectorTwo * index + N] * h;
+
             }
             matrixGramma[vectorOne*N + vectorTwo] = temp;
-            if(vectorOne != vectorTwo && temp > max_nonorthog) max_nonorthog = temp;
+            if(vectorOne != vectorTwo && fabs(temp) < max_nonorthog) max_nonorthog = fabs(temp);
         }
     }
 
@@ -87,6 +90,9 @@ int main()
     std::cout << std::endl;
 
     std::cout << "Max nonorthogonal = " << max_nonorthog << std::endl;
+
+    delete [] matrixVectors;
+    delete [] matrixGramma;
 
     return 1;
 }
