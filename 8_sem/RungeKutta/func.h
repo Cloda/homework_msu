@@ -8,6 +8,8 @@
 #define UNUSED(x) (void)(x)
 
 // Объявления функций
+void calculateF0(double x, double *y, double *ans, int n);
+void solution0(double x, double *y, double *ans, int n);
 void calculateF1(double x, double *y, double *ans, int n);
 void solution1(double x, double *y, double *ans, int n);
 void calculateF2(double x, double *y, double *ans, int n);

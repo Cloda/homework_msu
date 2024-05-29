@@ -15,6 +15,31 @@ void solution1(double x, double *y, double *ans, int n) {
 
 }
 
+// синус косинус
+void calculateF0(double x, double *y, double *ans, int n) {
+    UNUSED(x);
+    UNUSED(y);
+    if (n != 2) {
+        printf("Total error! \n\n");
+        return;
+    }
+     ans[0] = y[1];
+     ans[1] = -y[0];
+}
+
+// точное
+void solution0(double x, double *y, double *ans, int n) {
+    UNUSED(y);
+    if (n != 2) {
+        printf("Total error! \n\n");
+        return;
+    }
+    ans[0] = sin(x);
+    ans[1] = cos(x);
+}
+
+
+
 // экспонента
 void calculateF3(double x, double *y, double *ans, int n) {
     UNUSED(x);
