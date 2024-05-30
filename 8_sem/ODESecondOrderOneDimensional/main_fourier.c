@@ -68,7 +68,7 @@ void write_results_to_file(const char * filename, double * approx, double * exac
     fclose(file);
 }
 
-int main()
+int main(void)
 {
     int N = 6;  // Задаем количество точек
     double p = 1.;  // Задаем значение параметра p
@@ -90,7 +90,7 @@ int main()
     }
 
     coef_b(b, f, N);
-    FourierMethod(x, N, p, b);
+    fourier_method(x, N, p, b);
     analytical_solution(exact, x_values, N);
 
     // printf("ans: ");

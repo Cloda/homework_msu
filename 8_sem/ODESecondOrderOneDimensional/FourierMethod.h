@@ -13,7 +13,7 @@ double Dn(int n, double * f, double p, int N);
 
 void multMatrixByVector(const double *A, double *x, double *ans, int N);
 
-double FourierMethod(double * x, int N, double p, double * f);
+double fourier_method(double * x, int N, double p, double * f);
 
 double ErNorm(const double * A, const double * b, double * x, int N, double * mem);
 

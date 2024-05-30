@@ -63,7 +63,7 @@ double Dn(int n, double *f, double p, int N)
     return sp;
 }
 
-double FourierMethod(double *y, int N, double p, double *f)
+double fourier_method(double *y, int N, double p, double *f)
 {
     for (int k = 0; k < N + 1; k++)
     {
