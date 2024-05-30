@@ -70,7 +70,7 @@ void write_results_to_file(const char * filename, double * approx, double * exac
 
 int main(void)
 {
-    int N = 6;  // Задаем количество точек
+    int N = 100;  // Задаем количество точек
     double p = 1.;  // Задаем значение параметра p
     double *b;
     double *x;

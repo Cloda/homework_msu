@@ -4,24 +4,31 @@
 
 double func(double x){ 
     UNUSED(x);
-    return 1.0; 
+    // return 1.0; 
     // return sin(x);
+    return 0.0; 
 }
 double p(double x){ 
     UNUSED(x);
     return 1.0; 
     // return 0.0; 
+    return x; 
 }
 double analytical_solution(double x) {
+    UNUSED(x);
+
     // для p==1 f==1
-    double C = -1 / (exp(1) + 1);
-    return C * exp(x) - (1 + C) * exp(-x) + 1;
+    // double C = -1 / (exp(1) + 1);
+    // return C * exp(x) - (1 + C) * exp(-x) + 1;
     
     // для p==0 f==1
     // return x * (1 - x) / 2.0;
     
     // для p==0 f==sinx
     // return  -x*sin(1) + sin(x);
+
+    // для p==x f==0
+    return 0.0;
 }
 
 void draw_plots(const char *filename, const char *outputfile) {
@@ -40,7 +47,6 @@ void draw_plots(const char *filename, const char *outputfile) {
     fprintf(gnuplot, "set grid\n");
     fprintf(gnuplot, "plot '%s' using 1:2 with lines title 'Numerical', \\\n", filename);
     fprintf(gnuplot, "     '%s' using 1:3 with points title 'Analytical'\n", filename);
-    // fprintf(gnuplot, "plot '%s' using 1:4 with lines title 'Difference'\n", filename);
 
     pclose(gnuplot);
 }
