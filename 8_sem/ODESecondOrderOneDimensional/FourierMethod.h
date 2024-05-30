@@ -7,7 +7,7 @@
 
 double psi(int k, int n, int N);
 
-double Lambdan(int n, int N, double p);
+double lambda_n(int n, int N, double p);
 
 double Dn(int n, double * f, double p, int N);
 

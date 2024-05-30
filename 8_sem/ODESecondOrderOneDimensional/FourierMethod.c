@@ -45,7 +45,7 @@ double psi(int k, int n, int N)
     return sin(PI * n * k / (double)(N));
 }
 
-double Lambdan(int n, int N, double p)
+double lambda_n(int n, int N, double p)
 {
     double l = p - 2 * N * N * (cos(PI * n / (double)(N)) - 1);
     return l;
@@ -70,7 +70,7 @@ double fourier_method(double *y, int N, double p, double *f)
         y[k] = 0;
         for (int n = 1; n < N; n++)
         {
-            y[k] += Dn(n, f, p, N) / Lambdan(n, N, p) * psi(k, n, N);
+            y[k] += Dn(n, f, p, N) / lambda_n(n, N, p) * psi(k, n, N);
         }
     }
 
