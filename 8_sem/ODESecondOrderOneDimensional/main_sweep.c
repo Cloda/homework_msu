@@ -38,7 +38,9 @@ void draw_plots(const char *filename, const char *outputfile) {
     fprintf(gnuplot, "set xlabel 'x'\n");
     fprintf(gnuplot, "set ylabel 'Difference'\n");
     fprintf(gnuplot, "set grid\n");
-    fprintf(gnuplot, "plot '%s' using 1:4 with lines title 'Difference'\n", filename);
+    fprintf(gnuplot, "plot '%s' using 1:2 with lines title 'Numerical', \\\n", filename);
+    fprintf(gnuplot, "     '%s' using 1:3 with points title 'Analytical'\n", filename);
+    // fprintf(gnuplot, "plot '%s' using 1:4 with lines title 'Difference'\n", filename);
 
     pclose(gnuplot);
 }

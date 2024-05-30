@@ -39,18 +39,14 @@ void draw_plots(const char *filename, const char *outputfile) {
         exit(1);
     }
 
-    // Настройка Gnuplot
-
     fprintf(gnuplot, "set terminal pngcairo size 800,600 enhanced font 'Verdana,10'\n");
     fprintf(gnuplot, "set output '%s'\n", outputfile);
     fprintf(gnuplot, "set title 'Difference between Numerical and Analytical Solutions'\n");
     fprintf(gnuplot, "set xlabel 'x'\n");
     fprintf(gnuplot, "set ylabel 'Value'\n");
     fprintf(gnuplot, "set grid\n");
-    fprintf(gnuplot, "set style line 1 lc rgb 'blue' lt 1 lw 2\n");
-    fprintf(gnuplot, "set style line 2 lc rgb 'red' lt 2 lw 2\n");
-    fprintf(gnuplot, "plot '%s' using 1:2 with lines linestyle 2 title 'Numerical', \\\n", filename);
-    fprintf(gnuplot, "     '%s' using 1:3 with lines linestyle 1 title 'Analytical'\n", filename);
+    fprintf(gnuplot, "plot '%s' using 1:2 with lines title 'Numerical', \\\n", filename);
+    fprintf(gnuplot, "     '%s' using 1:3 with points title 'Analytical'\n", filename);
 }
 
 void write_results_to_file(const char * filename, double * approx, double * exact, int N, double *x)
