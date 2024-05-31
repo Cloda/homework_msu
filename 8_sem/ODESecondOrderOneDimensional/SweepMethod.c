@@ -29,3 +29,11 @@ int sweep_method(double *a, double *b, double *c, double *f, double *y, double *
     return 1;
 }
 
+void print_vector_temp(double * A, int N)
+{
+    for(int i = 0; i < N; i++) {
+        printf("%20.15lf ", A[i]);
+    }
+    printf("\n");
+}
+

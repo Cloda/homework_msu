@@ -1,7 +1,7 @@
 TARGETS = main_fourier main_sweep
 
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c11 -O2
+CFLAGS = -Wall -Wextra -O2
 
 # Исходные файлы и заголовочные файлы для каждой программы
 FOURIER_SRCS = main_fourier.c FourierMethod.c

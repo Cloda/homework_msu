@@ -2,5 +2,5 @@
 #include <stdlib.h>
 #define UNUSED(x) (void)(x)
 
-/* На самом деле, система должна иметь размер N+1, здесь я следую обозначеням Чижонкова Бахвалова и Корнева*/
+void print_vector_temp(double * A, int N);
 int sweep_method(double * a, double * b, double * c, double * f, double * y, double * alpha, double * beta, int N);
