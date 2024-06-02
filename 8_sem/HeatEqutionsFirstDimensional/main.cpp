@@ -15,13 +15,16 @@ void draw_plots(const char *filename, const char *outputfile) {
     // Настройка Gnuplot
     fprintf(gnuplot, "set terminal pngcairo size 800,600 enhanced font 'Verdana,10'\n");
     fprintf(gnuplot, "set output '%s'\n", outputfile);
-    fprintf(gnuplot, "set title 'Plot solution'\n");
+    fprintf(gnuplot, "set title 'Error value'\n");
     fprintf(gnuplot, "set xlabel 'x'\n");
     fprintf(gnuplot, "set ylabel 'y'\n");
-    fprintf(gnuplot, "set zlabel 'z'\n");
+    // fprintf(gnuplot, "set zlabel 'z'\n");
     fprintf(gnuplot, "set grid\n");
-    fprintf(gnuplot, "splot '%s' using 1:2:3 with lines title 'SOl', \\\n", filename);
-    fprintf(gnuplot, "		'%s' using 1:2:4 with points title 'NUM', \\\n", filename);
+    // fprintf(gnuplot, "splot '%s' using 1:2:3 with lines title 'SOl', \\\n", filename);
+    // fprintf(gnuplot, "		'%s' using 1:2:4 with points title 'NUM', \\\n", filename);
+    fprintf(gnuplot, "plot '%s' using 1:3 with lines title 'SOl', \\\n", filename);
+	fprintf(gnuplot, "      1/x**4 with lines title '1/h^4'\n");
+
 
 
     fclose(gnuplot);
@@ -40,9 +43,9 @@ int main() {
 	}
 	
 	// по x
-	for(int M = 2; M < 10; M += 1){
+	for(int M = 2; M < 50; M += 1){
 		// по t
-		for(int N = 50; N < 51; N += 1){
+		for(int N = 1000; N < 1001; N += 1){
 			double h, tau;
 			double* u;
 			double* sol;
@@ -67,7 +70,7 @@ int main() {
 			u = new double [(N + 1) * (M + 1)];
 
 			if (u == NULL) {
-				printf("Не удалось выделить память под массив u!\n");
+				printf("Not enough memory u!\n");
 				return -1;
 			}
 			
@@ -75,7 +78,7 @@ int main() {
 
 			if (p == NULL) {
 				delete[] u;
-				printf("Не удалось выделить память под массив b!\n");
+				printf("Not enough memory p!\n");
 				return -1;
 			}
 			
@@ -84,7 +87,7 @@ int main() {
 			if (f == NULL) {
 				delete[] u;
 				delete[] p;
-				printf("Не удалось выделить память под массив f!\n");
+				printf("Not enough memory f!\n");
 				return -1;
 			}
 			
@@ -94,7 +97,7 @@ int main() {
 				delete[] u;
 				delete[] p;
 				delete[] f;
-				printf("Не удалось выделить память под массив sol!\n");
+				printf("Not enough memory sol!\n");
 				return -1;
 			}
 			
@@ -105,7 +108,7 @@ int main() {
 				delete[] p;
 				delete[] f;
 				delete[] sol;
-				printf("Не удалось выделить память под массив sol!\n");
+				printf("Not enough memory a1!\n");
 				return -1;
 			}
 			
@@ -117,7 +120,7 @@ int main() {
 				delete[] f;
 				delete[] sol;
 				delete[] a1;
-				printf("Не удалось выделить память под массив sol!\n");
+				printf("Not enough memory b1!\n");
 				return -1;
 			}
 			
@@ -130,7 +133,7 @@ int main() {
 				delete[] sol;
 				delete[] a1;
 				delete[] b1;
-				printf("Не удалось выделить память под массив sol!\n");
+				printf("Not enough memory c1!\n");
 				return -1;
 			}
 			
@@ -144,7 +147,7 @@ int main() {
 				delete[] a1;
 				delete[] b1;
 				delete[] c1;
-				printf("Не удалось выделить память под массив sol!\n");
+				printf("Not enough memory cup!\n");
 				return -1;
 			}
 			
@@ -159,7 +162,7 @@ int main() {
 				delete[] b1;
 				delete[] c1;
 				delete[] cup;
-				printf("Не удалось выделить память под массив sol!\n");
+				printf("Not enough memory tmp!\n");
 				return -1;
 			}
 			
@@ -250,11 +253,11 @@ int main() {
 					for (int j = 1; j < M + 1; j++){
 						cup[j] = f[(i + 1) * (M + 1) + j] + sol[i * (M + 1) + j] / tau;
 					}
-					for (int j = 0; j < M + 1; j++){
+					// for (int j = 0; j < M + 1; j++){
 						//printf("%20.7e + %20.7e = %20.7e\n", f[(i + 1) * (M + 1) + j], sol[i * (M + 1) + j] / tau, cup[j]);
-					}
+					// }
 					if (sweep(M, tmp, cup, a1, b1, c1) == -1) {
-						printf("Не удалось выделить память под массив sol!\n");
+						printf("Not enough memory\n");
 						return -1;
 					}
 					for (int j = 0; j < M + 1; j++){

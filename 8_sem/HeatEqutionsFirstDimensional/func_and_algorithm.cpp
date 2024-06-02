@@ -3,28 +3,29 @@
 double sol_(double t, double x) {
 	t+=0;
 	x+=0;
-	//return sin(0.5 * M_PI * x) * exp(-0.25 * M_PI * M_PI * t);
-	return (x * x - 2 * x) * (t + 1) ;
+	// 1
+	return sin(0.5 * M_PI * x) * exp(-0.25 * M_PI * M_PI * t);
+	// 2
+	// return (x * x - 2 * x) * (t + 1) ;
 }
 
 double f_(double t, double x) {
-	t+=0;
-	x+=0;
-	//return sin(1.5 * M_PI * x) * exp(-2.25 * M_PI * M_PI * t) * x * x;
-	//return 0.25 * M_PI * M_PI * sin(0.5 * M_PI * x);
-	return (x * x - 2 * x) - 2 * (t + 1);
+	UNUSED(t);
+	UNUSED(x);
+	// 1
+	return 0.0;
+	// 2
+	// return (x * x - 2 * x) - 2 * (t + 1);
 }
 
 double u_0(double x) {
-	x+=0;
-	//return sin(1.5 * M_PI * x);
-	//return -6*x;
-	//return sin(0.5 * M_PI * x);
-	return (x * x - 2 * x);
+	// 1
+	return sin(0.5 * M_PI * x);
+	// 2
+	// return (x * x - 2 * x);
 }
 
 void sol_func(int N, int M, double tau, double h, double* u) {
-	
 	for (int i = 0; i < N + 1; i++) {
 		for (int j = 0; j < M + 1; j++){
 			u[i * (M + 1) + j] = sol_(i * tau, j * h);
@@ -34,7 +35,6 @@ void sol_func(int N, int M, double tau, double h, double* u) {
 }
 
 void f_func(int N, int M, double tau, double h, double* f){
-	
 	for (int i = 0; i < N + 1; i++) {
 		for (int j = 0; j < M + 1; j++){
 			f[i * (M + 1) + j] = f_(i * tau, j * h);
@@ -43,14 +43,11 @@ void f_func(int N, int M, double tau, double h, double* f){
 	
 }
 
-void p_func(int M, double h, double* b){
-	h +=0;
+void p_func(int M, double h, double* p){
 	UNUSED(h);
 	for (int i = 0; i < M + 1; i++) {
-		//b[i] = i * h * i * h;
-		b[i] = 0;
+		p[i] = 0;
 	}
-	
 }
 
 void exact(int N, int M, double tau, double h, double* u, double* b, double* f){
@@ -118,7 +115,5 @@ double norm(int N, int M, double* sol, double* y) {
 	
 	return err;
 }
-
-
 
 
