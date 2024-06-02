@@ -12,7 +12,7 @@ double u_0(double x);
 void sol_func(int N, int M, double tau, double h, double* u);
 void f_func(int N, int M, double tau, double h, double* f);
 void p_func(int M, double h, double* b);
-void scheme1(int N, int M, double tau, double h, double* u, double* b, double* f);
+void exact(int N, int M, double tau, double h, double* u, double* b, double* f);
 int sweep(int N, double* y, double* f, double* a, double* b, double* c);
 double norm(int N, int M, double* sol, double* y);
 
