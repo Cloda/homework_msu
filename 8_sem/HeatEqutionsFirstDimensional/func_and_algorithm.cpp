@@ -1,8 +1,8 @@
 #include "func_and_algorithm.hpp"
 
 double sol_(double t, double x) {
-	t+=0;
-	x+=0;
+	UNUSED(t);
+	UNUSED(x);
 	// 1
 	return sin(0.5 * M_PI * x) * exp(-0.25 * M_PI * M_PI * t);
 	// 2
@@ -69,14 +69,14 @@ int sweep(int N, double* y, double* f, double* a, double* b, double* c){
 	
 	al = new double [N + 1];
 	if (al == NULL) {
-        printf("Не удалось выделить память под массив al!\n");
+        printf("Not enough memory al!\n");
         return -1;
     }
 	
 	bet = new double [N + 1];
 	if (bet == NULL) {
 		delete[] al;
-        printf("Не удалось выделить память под массив bet!\n");
+        printf("Not enough memory bet!\n");
         return -1;
     }
 	al[0] = 0.0;

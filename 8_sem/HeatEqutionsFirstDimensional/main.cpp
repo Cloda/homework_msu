@@ -16,14 +16,14 @@ void draw_plots(const char *filename, const char *outputfile) {
     fprintf(gnuplot, "set terminal pngcairo size 800,600 enhanced font 'Verdana,10'\n");
     fprintf(gnuplot, "set output '%s'\n", outputfile);
     fprintf(gnuplot, "set title 'Error value'\n");
-    fprintf(gnuplot, "set xlabel 'x'\n");
+    fprintf(gnuplot, "set xlabel 't'\n");
     fprintf(gnuplot, "set ylabel 'y'\n");
     // fprintf(gnuplot, "set zlabel 'z'\n");
     fprintf(gnuplot, "set grid\n");
     // fprintf(gnuplot, "splot '%s' using 1:2:3 with lines title 'SOl', \\\n", filename);
     // fprintf(gnuplot, "		'%s' using 1:2:4 with points title 'NUM', \\\n", filename);
-    fprintf(gnuplot, "plot '%s' using 1:3 with lines title 'SOl', \\\n", filename);
-	fprintf(gnuplot, "      1/x**4 with lines title '1/h^4'\n");
+    fprintf(gnuplot, "plot '%s' using 2:3 with lines title 'Error', \\\n", filename);
+	// fprintf(gnuplot, "       1/x with lines title '1/tau'\n");
 
 
 
@@ -43,9 +43,12 @@ int main() {
 	}
 	
 	// по x
-	for(int M = 2; M < 50; M += 1){
+	for(int M = 10; M < 21; M += 1){
 		// по t
-		for(int N = 1000; N < 1001; N += 1){
+		for(int N = 200; N < 801; N += 1){
+			if (2*M*M != N){
+				continue;
+			}
 			double h, tau;
 			double* u;
 			double* sol;
@@ -266,17 +269,17 @@ int main() {
 				}
 			}
 			
-			for (int i = 0; i < N + 1; i++) {
-				for (int j = 0; j < M + 1; j++){
-					fprintf(fout1, "%20.7e ", u[i * (M + 1) + j]);
-					fprintf(fout, "%lf ", i * tau);
-					fprintf(fout, "%lf ", j * h);
-					fprintf(fout, "%20.7e ", u[i * (M + 1) + j]);
-					fprintf(fout, "%20.7e", sol[i * (M + 1) + j]);
-					fprintf(fout, "%20.7e\n", fabs(sol[i * (M + 1) + j] - u[i * (M + 1) + j]));
-				}
-				fprintf(fout1, "\n");
-			}
+			// for (int i = 0; i < N + 1; i++) {
+			// 	for (int j = 0; j < M + 1; j++){
+			// 		fprintf(fout1, "%20.7e ", u[i * (M + 1) + j]);
+			// 		fprintf(fout, "%lf ", i * tau);
+			// 		fprintf(fout, "%lf ", j * h);
+			// 		fprintf(fout, "%20.7e ", u[i * (M + 1) + j]);
+			// 		fprintf(fout, "%20.7e", sol[i * (M + 1) + j]);
+			// 		fprintf(fout, "%20.7e\n", fabs(sol[i * (M + 1) + j] - u[i * (M + 1) + j]));
+			// 	}
+			// 	fprintf(fout1, "\n");
+			// }
 			
 			fprintf(converge, "%d  %d ", M, N);
 			fprintf(converge, "%lf\n", norm(N, M, sol, u));
