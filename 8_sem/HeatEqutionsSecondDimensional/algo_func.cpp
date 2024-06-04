@@ -2,26 +2,26 @@
 
 double sol_(double t, double x, double y) {
 	// 1 - многочлены
-	// return (x * x - 2 * x) * (y * y - 2 * y) * (t + 1);
+	return (x * x - 2 * x) * (y * y - 2 * y) * (t + 1);
 	
 	// 2 - берем разные гармоники
-	return sin(0.5 * M_PI * x) * sin(1.5 * M_PI * y) * exp(-0.25 * M_PI * M_PI * 10 * t);
+	// return sin(0.5 * M_PI * x) * sin(1.5 * M_PI * y) * exp(-0.25 * M_PI * M_PI * 10 * t);
 }
 
 double f_(double t, double x, double y) {
 	// 1 - многочлены
-	// return (x * x - 2 * x) * (y * y - 2 * y) - 2 * (t + 1) *(x * x - 2 * x + y * y - 2 * y);
+	return (x * x - 2 * x) * (y * y - 2 * y) - 2 * (t + 1) *(x * x - 2 * x + y * y - 2 * y);
 	
 	// 2 - берем разные гармоники
-	return 0.0;
+	// return 0.0;
 }
 
 double u_0(double x, double y) {
 	// 1 - многочлены
-	// return (x * x - 2 * x) * (y * y - 2 * y);
+	return (x * x - 2 * x) * (y * y - 2 * y);
 	
 	// 2 - берем разные гармоники
-	return sin(0.5 * M_PI * x) * sin(1.5 * M_PI * y);
+	// return sin(0.5 * M_PI * x) * sin(1.5 * M_PI * y);
 }
 
 void sol_func(int N, int Nx, int Ny, double tau, double hx, double hy, double* u) {
